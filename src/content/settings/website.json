@@ -1,0 +1,168 @@
+{
+  "hero": {
+    "enabled": true,
+    "slides": [
+      {
+        "backgroundImage": "/uploads/bakar.jpeg",
+        "welcome": "Selamat Datang di",
+        "headline": "SMP Negeri 1 Indonesia",
+        "city": "Malang",
+        "subtitle": "Sekolah Unggulan Berbasis Se-Indonesia"
+      },
+      {
+        "backgroundImage": "/uploads/hero-2.jpg",
+        "welcome": "Slide Kedua",
+        "headline": "Judul Slide 2",
+        "city": "Kota Kedua",
+        "subtitle": "Deskripsi slide kedua"
+      },
+      {
+        "backgroundImage": "/uploads/hero-3.jpg",
+        "welcome": "Slide Ketiga",
+        "headline": "Judul Slide 3",
+        "city": "Kota Ketiga",
+        "subtitle": "Deskripsi slide ketiga"
+      }
+    ],
+    "textColors": {
+      "welcomeColor": "#ffffff",
+      "headlineColor": "#ffffff",
+      "cityColor": "#fbbf24",
+      "subtitleColor": "#e5e7eb"
+    },
+    "overlay": {
+      "gradientColor": "#14532d",
+      "opacity": 50
+    },
+    "marquee": {
+      "scrollSpeed": 15,
+      "enabled": true
+    }
+  },
+  "header": {
+    "items": [
+      {
+        "label": "Home",
+        "href": "/",
+        "isActive": true
+      },
+      {
+        "label": "Profil ",
+        "href": "/about",
+        "isActive": false
+      },
+      {
+        "label": "Berita",
+        "href": "/posts/news",
+        "isActive": false
+      },
+      {
+        "label": "Pengumuman",
+        "href": "/posts/pengumuman",
+        "isActive": false
+      },
+      {
+        "label": "Prestasi",
+        "href": "/posts/prestasi",
+        "isActive": false
+      },
+      {
+        "label": "Kontak",
+        "href": "/contact",
+        "isActive": false
+      }
+    ],
+    "style": {
+      "bgColor": "#F6F6F6",
+      "textColor": "#006E42",
+      "hoverColor": "#00AB64",
+      "borderColor": "#e5e7eb",
+      "bgTransparent": "solid"
+    },
+    "schoolInfo": {
+      "name": "SMPN 2 INDONESIA",
+      "logo": "/uploads/download (2).png",
+      "logoAlt": "SMPN 2 INDONESIA",
+      "logoWidthDesktop": 40,
+      "logoWidthMobile": 40,
+      "showName": true
+    }
+  },
+  "slider": {
+    "images": [
+      {
+        "url": "/uploads/ChatGPT Image Feb 3, 2026, 10_10_17 AM.webp",
+        "alt": "SMPN 1 INDONESIA",
+        "caption": ""
+      },
+      {
+        "url": "/uploads/ChatGPT Image Feb 3, 2026, 10_13_59 AM.webp",
+        "alt": "Slider Image",
+        "caption": ""
+      },
+      {
+        "url": "/uploads/ChatGPT Image Feb 3, 2026, 10_15_19 AM.webp",
+        "alt": "Slider Image",
+        "caption": ""
+      }
+    ],
+    "schoolInfo": {
+      "name": "SMP NEGERI 01 ",
+      "city": "INDONESIA",
+      "motto": "Berprestasi dalam Akademik. Berkarakter dalam Sikap. Bertanggung Jawab dalam Tindakan.",
+      "welcomeMessage": "Welcom to",
+      "accreditation": "TERAKREDITASI A",
+      "textSettings": {
+        "color": "#FFFFFF",
+        "fontFamily": {
+          "welcome": "font-mono"
+        }
+      }
+    },
+    "overlay": {
+      "color": "#006E42",
+      "opacity": "0.8"
+    },
+    "animation": {
+      "autoSlide": true,
+      "marqueeSpeed": 1
+    }
+  },
+  "seo": {
+    "siteInfo": {
+      "siteName": "SMPN 1 INDONESIA",
+      "siteUrl": "https://smanegeri1indonesia.sch.id",
+      "siteDescription": "Rasa Penasaran Menginspirasi Pengetahuan",
+      "siteLogo": "/uploads/logo-sma.png",
+      "favicon": "/uploads/logo-sma.png"
+    },
+    "globalMeta": {
+      "titleTemplate": "%s | SMP Negeri 1 Indonesia",
+      "defaultTitle": "SMP Negeri 1 Indonesia",
+      "defaultDescription": "Rasa Penasaran Menginspirasi Pengetahuan",
+      "defaultKeywords": "SMP Negeri 1 Indonesia"
+    },
+    "openGraph": {
+      "type": "website",
+      "image": "/uploads/smanegeri1indonesia.png"
+    },
+    "analytics": {
+      "gaId": "G-ML2YKK4FMF"
+    }
+  },
+  "footer": {
+    "schoolName": "SMP NEGERI 1 INDONESIA"
+  },
+  "themeColors": {
+    "background": "#F6F6F6",
+    "primary": "#006E42",
+    "secondary": "#00A864",
+    "surface": "#F6F6F6",
+    "textBase": "#1A1A1A",
+    "textHeading": "#006E42",
+    "textMuted": "#929292",
+    "link": "#006E42",
+    "linkHover": "#00A564",
+    "border": "#D4D4D4"
+  }
+}

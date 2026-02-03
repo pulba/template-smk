@@ -1,0 +1,263 @@
+---
+import { getCollection } from "astro:content";
+import contactData from "../content/contact/index.json";
+import { SOCIAL_ICON_REGISTRY } from "../config/socialIcons";
+
+// Ambil data settings
+const settingsData = await getCollection("settings");
+const settings = settingsData[0]?.data || {};
+
+// Ambil nama sekolah
+let schoolName = "Nama Sekolah";
+if (settings.footer?.schoolName) {
+    schoolName = settings.footer.schoolName;
+} else if (settings.header?.schoolInfo?.name) {
+    schoolName = settings.header.schoolInfo.name;
+} else if (settings.slider?.schoolInfo?.name) {
+    schoolName = settings.slider.schoolInfo.name;
+}
+
+// Ambil motto sekolah
+const schoolMotto =
+    settings.slider?.schoolInfo?.motto ||
+    "Berkomitmen untuk mencetak generasi penerus bangsa yang cerdas, berakhlak mulia, dan siap bersaing di era global.";
+
+// Logo URL (fallback to default if not set)
+const logoUrl = settings.header?.schoolInfo?.logo || "/uploads/logo.webp";
+const logoAlt = settings.header?.schoolInfo?.logoAlt || "Logo Sekolah";
+
+// Tahun otomatis
+const currentYear = new Date().getFullYear();
+
+// Quick Links
+const quickLinks = [
+    { name: "Beranda", href: "/" },
+    { name: "Profil", href: "/about" },
+    { name: "Berita", href: "/posts" },
+    { name: "Pengumuman", href: "/posts/pengumuman" },
+    { name: "Prestasi", href: "/posts/prestasi" },
+    { name: "Ekstrakurikuler", href: "/extracurricular" },
+    { name: "Kontak", href: "/contact" },
+    { name: "PPDB", href: "/ppdb" },
+];
+
+const contactDetails = contactData.contactInfo.details;
+const socialLinks = contactData.socialMedia.links;
+const hours = contactData.hours?.days || [];
+
+// Helper untuk icon sosmed
+const getSocialIcon = (key: string) => {
+    // @ts-ignore
+    const iconData = SOCIAL_ICON_REGISTRY[key.toLowerCase()];
+    return iconData
+        ? iconData.svg
+        : `<path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.033 2.795c.291.685.549 1.458.757 2.296-1.33.242-2.731.396-4.183.435 1.002-1.109 2.196-2.022 3.426-2.731zm9.459 2.731c-1.452-.039-2.853-.193-4.183-.435.208-.838.466-1.611.757-2.296 1.23.709 2.424 1.622 3.426 2.731zm-13.433 1.902c1.714-.047 3.364-.236 4.909-.533-.186 1.011-.318 2.078-.367 3.203h-5.45c.19-1.025.503-1.967.908-2.67zm5.908 5.105c.045-1.079.167-2.102.34-3.056 1.155-.916 2.469-1.637 3.911-2.083.473 1.666.866 3.439 1.146 5.139h-5.397zm6.397 0c.28-1.7.673-3.473 1.146-5.139 1.442.446 2.756 1.167 3.911 2.083.173.954.295 1.977.34 3.056h-5.397zm-5.397 2.415h5.397c-.045 1.079-.167 2.102-.34 3.056-1.155.916-2.469 1.637-3.911 2.083-.473-1.666-.866-3.439-1.146-5.139zm6.397 0h5.397c-.045 1.079-.167 2.102-.34 3.056-1.442-.446-2.756-1.167-3.911-2.083-.28 1.7-.673 3.473-1.146 5.139zm-2.053 5.344c.489 1.218 1.05 2.272 1.659 3.082-1.448.337-3.016.536-4.66.564v-5.28c.954.27 1.968.857 3.001 1.634zm-6.287-1.634v5.28c-1.644-.028-3.212-.227-4.66-.564.609-.81 1.17-1.864 1.659-3.082 1.033-.777 2.047-1.364 3.001-1.634zm-3-12.224h5.45c.049 1.125.181 2.192.367 3.203-1.545-.297-3.195-.486-4.909-.533-.405-.703-.718-1.645-.908-2.67z"/>`;
+};
+---
+
+<footer class="bg-primary text-surface pt-20 pb-10" role="contentinfo">
+    <div class="container mx-auto px-4">
+        <!-- Top Section -->
+        <div
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16"
+        >
+            <!-- Col 1: School Identity -->
+            <div data-animate="fade">
+                <div class="flex items-center gap-3 mb-6">
+                    <img
+                        src={logoUrl}
+                        alt={logoAlt}
+                        class="h-14 w-auto"
+                        onerror="this.onerror=null;this.src='/uploads/logo-placeholder.png';"
+                    />
+                    <div class="flex flex-col">
+                        <span class="font-bold text-xl leading-tight text-white"
+                            >{schoolName}</span
+                        >
+                    </div>
+                </div>
+                <p class="text-gray-400 text-sm leading-relaxed mb-6">
+                    {schoolMotto}
+                </p>
+                <!-- Social Media Icons (Move here for better mobile view or keep in last col?) -->
+                <div class="flex gap-4">
+                    {
+                        socialLinks &&
+                            socialLinks.map((social) => (
+                                <a
+                                    href={social.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-secondary hover:text-white transition-all duration-300"
+                                >
+                                    <svg
+                                        class="text-surface w-5 h-5 fill-current"
+                                        viewBox="0 0 24 24"
+                                        set:html={getSocialIcon(social.iconKey)}
+                                    />
+                                </a>
+                            ))
+                    }
+                </div>
+            </div>
+
+            <!-- Col 2: Jelajahi -->
+            <div data-animate="fade">
+                <h3
+                    class="text-lg font-bold text-white mb-6 relative inline-block"
+                >
+                    Jelajahi
+                    <span
+                        class="absolute -bottom-2 left-0 w-10 h-1 bg-secondary rounded-full"
+                    ></span>
+                </h3>
+                <ul class="space-y-3">
+                    {
+                        quickLinks.map((link) => (
+                            <li>
+                                <a
+                                    href={link.href}
+                                    class="hover:text-secondary hover:translate-x-2 transition-all duration-300 inline-block text-sm"
+                                >
+                                    <p class="text-surface">{link.name}</p>
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+
+            <!-- Col 3: Hubungi Kami -->
+            <div data-animate="fade">
+                <h3
+                    class="text-lg font-bold text-white mb-6 relative inline-block"
+                >
+                    Hubungi Kami
+                    <span
+                        class="absolute -bottom-2 left-0 w-10 h-1 bg-secondary rounded-full"
+                    ></span>
+                </h3>
+                <ul class="space-y-4">
+                    {
+                        contactDetails &&
+                            contactDetails.map((detail) => (
+                                <li class="flex items-start gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 text-secondary mt-1">
+                                        {detail.type === "phone" && (
+                                            <svg
+                                                class="w-4 h-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                                                />
+                                            </svg>
+                                        )}
+                                        {detail.type === "email" && (
+                                            <svg
+                                                class="w-4 h-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                                                />
+                                            </svg>
+                                        )}
+                                        {detail.type === "address" && (
+                                            <svg
+                                                class="w-4 h-4"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                                />
+                                                <path
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                                />
+                                            </svg>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <h4 class="text-xs text-secondary uppercase font-bold tracking-wider mb-1">
+                                            {detail.label}
+                                        </h4>
+                                        <p class="text-gray-300 text-sm leading-snug">
+                                            {detail.value}
+                                        </p>
+                                    </div>
+                                </li>
+                            ))
+                    }
+                </ul>
+            </div>
+
+            <!-- Col 4: Jam Operasional -->
+            <div data-animate="fade">
+                <h3
+                    class="text-lg font-bold text-white mb-6 relative inline-block"
+                >
+                    Jam Operasional
+                    <span
+                        class="absolute -bottom-2 left-0 w-10 h-1 bg-secondary rounded-full"
+                    ></span>
+                </h3>
+                <div class="bg-white/5 rounded-xl p-5 border border-white/10">
+                    <ul class="space-y-3">
+                        {
+                            hours.map((schedule) => (
+                                <li class="flex justify-between items-center text-sm border-b border-white/10 pb-3 last:border-0 last:pb-0">
+                                    <span class="text-gray-400">
+                                        {schedule.day}
+                                    </span>
+                                    <span class="text-secondary font-semibold">
+                                        {schedule.time}
+                                    </span>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- BottomBar -->
+        <div
+            class="border-t border-white/10 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500"
+        >
+            <p>
+                &copy; {currentYear}
+                <span class="text-white">{schoolName}</span>. All Rights
+                Reserved.
+            </p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-white transition-colors"
+                    ><p class="text-surface">Privacy Policy</p></a
+                >
+                <a href="#" class="hover:text-white transition-colors"
+                    ><p class="text-surface">Terms of Service</p></a
+                >
+                <a href="#" class="hover:text-white transition-colors"
+                    ><p class="text-surface">Sitemap</p></a
+                >
+            </div>
+        </div>
+    </div>
+</footer>

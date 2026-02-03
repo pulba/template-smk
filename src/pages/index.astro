@@ -1,0 +1,572 @@
+---
+import Layout from "../layouts/Layout.astro";
+import LatestPosts from "../components/LatestPosts.astro";
+import ExtracurricularList from "../components/ExtracurricularList.astro";
+import Highlight from "../components/Highlight.astro";
+import Contact from "../components/Contact.astro";
+import "../styles/global.css";
+import { getCollection } from "astro:content";
+import websiteSettings from "../content/settings/website.json";
+import HeroSection from "../components/HeroSection.astro";
+import StaffList from "../components/StaffList.astro";
+import Year from "../components/Year.astro";
+import GallerySlider from "../components/GallerySlider.astro";
+
+const allPosts = await getCollection("posts");
+
+// Proses posts untuk mendapatkan category dan slug yang benar
+const processedPosts = allPosts.map((post) => {
+  const filePath = post.filePath ?? "";
+  let category = "";
+  let slug = "";
+
+  // Extract category dari filePath
+  if (filePath.startsWith("src/content/posts/")) {
+    const relPath = filePath.replace(/^src\/content\/posts\//, "");
+    const parts = relPath.split("/");
+    if (parts.length >= 2) {
+      category = parts[0];
+      // Slug adalah sisa path tanpa extension
+      slug = parts
+        .slice(1)
+        .join("/")
+        .replace(/\.mdx?$/, "");
+    }
+  }
+
+  // Fallback ke frontmatter jika tidak ditemukan di filePath
+  if (!category && post.data.category) {
+    category = post.data.category;
+  }
+
+  // Fallback untuk slug - gunakan id sebagai fallback
+  if (!slug) {
+    slug = post.id.split("/").pop() ?? "";
+  }
+
+  return {
+    slug,
+    category,
+    data: post.data,
+  };
+});
+
+// Filter posts by category
+const pengumumanPosts = processedPosts
+  .filter((post) => post.category.toLowerCase() === "pengumuman")
+  .sort((a, b) => {
+    const dateA = new Date(a.data.pubdate ?? 0).getTime();
+    const dateB = new Date(b.data.pubdate ?? 0).getTime();
+    return dateB - dateA;
+  });
+
+const prestasiPosts = processedPosts
+  .filter((post) => post.category.toLowerCase() === "prestasi")
+  .sort((a, b) => {
+    const dateA = new Date(a.data.pubdate ?? 0).getTime();
+    const dateB = new Date(b.data.pubdate ?? 0).getTime();
+    return dateB - dateA;
+  });
+
+// Get latest posts
+const latestPosts = processedPosts
+  .sort((a, b) => {
+    const dateA = new Date(a.data.pubdate ?? 0).getTime();
+    const dateB = new Date(b.data.pubdate ?? 0).getTime();
+    return dateB - dateA;
+  })
+  .slice(0, 6);
+---
+
+<Layout>
+  <!-- Hero Section -->
+  <HeroSection />
+
+  <!-- Highlight Section - Modern 3-Column Grid -->
+  <section class="relative py-20 bg-gradient-to-b from-white to-gray-50">
+    <div class="container mx-auto px-4">
+      <Highlight />
+    </div>
+  </section>
+
+  <!-- Latest News Section - Modern Card Grid -->
+  <section
+    class="relative py-24 bg-gradient-to-br from-primary via-primary to-secondary overflow-hidden"
+  >
+    <!-- Decorative Elements -->
+    <div
+      class="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"
+    >
+    </div>
+    <div
+      class="absolute bottom-0 left-0 w-96 h-96 bg-black/5 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2"
+    >
+    </div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="text-center mb-16" data-animate="fade">
+        <h2 class="text-4xl md:text-5xl font-bold text-surface mb-4">
+          Berita Terbaru
+        </h2>
+        <p class="text-surface text-lg max-w-2xl mx-auto">
+          Informasi terkini seputar kegiatan dan pencapaian
+        </p>
+        <div class="flex items-center justify-center gap-2 mt-6">
+          <div class="h-1 w-20 bg-white rounded-full"></div>
+          <div class="h-2 w-2 bg-secondary rounded-full"></div>
+          <div class="h-1 w-20 bg-white rounded-full"></div>
+        </div>
+      </div>
+
+      <!-- News Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+        {
+          latestPosts.slice(0, 4).map((post) => (
+            <article
+              data-animate="fade"
+              class="group bg-white/95 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2"
+            >
+              <a href={`/posts/${post.category}/${post.slug}`} class="block">
+                <div class="relative overflow-hidden aspect-[4/3]">
+                  <img
+                    src={post.data.heroImage || "/uploads/default-thumb.jpg"}
+                    alt={post.data.title}
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    loading="lazy"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <span class="absolute top-4 left-4 bg-secondary text-surface px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+                    {post.category}
+                  </span>
+                </div>
+                <div class="p-5">
+                  <h3 class="font-bold text-lg text-primary mb-2 line-clamp-2 group-hover:text-secondary transition-colors duration-300">
+                    {post.data.title}
+                  </h3>
+                  {post.data.description && (
+                    <p class="text-sm text-gray-600 line-clamp-2 mb-3">
+                      {post.data.description}
+                    </p>
+                  )}
+                  <div class="flex items-center justify-between text-xs text-gray-500">
+                    <span>
+                      {new Date(post.data.pubdate || "").toLocaleDateString(
+                        "id-ID",
+                        { day: "numeric", month: "short", year: "numeric" },
+                      )}
+                    </span>
+                    <span class="text-primary font-medium group-hover:translate-x-1 transition-transform duration-300">
+                      Baca →
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="text-center" data-animate="fade">
+        <a
+          href="/posts"
+          class="inline-flex items-center gap-2 bg-white text-primary px-8 py-4 rounded-full font-bold text-lg shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300"
+        >
+          <span>Lihat Semua Berita</span>
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Student Achievements Section - Premium Design -->
+  <section class="relative py-24 bg-white">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-5">
+      <div
+        class="absolute inset-0"
+        style="background-image: radial-gradient(circle, #254166 1px, transparent 1px); background-size: 20px 20px;"
+      >
+      </div>
+    </div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="text-center mb-16" data-animate="fade">
+        <h2 class="text-4xl md:text-5xl font-bold text-primary mb-4">
+          Prestasi Siswa
+        </h2>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+          Kebanggaan kami atas pencapaian luar biasa dari siswa-siswi berbakat
+        </p>
+        <div class="flex items-center justify-center gap-2 mt-6">
+          <div class="h-1 w-20 bg-primary rounded-full"></div>
+          <div class="h-2 w-2 bg-secondary rounded-full"></div>
+          <div class="h-1 w-20 bg-primary rounded-full"></div>
+        </div>
+      </div>
+
+      <!-- Prestasi Cards -->
+      <div class="max-w-4xl mx-auto space-y-6 mb-12">
+        {
+          prestasiPosts.slice(0, 4).map((post) => (
+            <article
+              data-animate="fade"
+              class="group bg-gradient-to-r from-white to-gray-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-secondary"
+            >
+              <a
+                href={`/posts/${post.category}/${post.slug}`}
+                class="flex flex-col sm:flex-row"
+              >
+                <div class="sm:w-72 aspect-video sm:aspect-[4/3] overflow-hidden flex-shrink-0">
+                  <img
+                    src={post.data.heroImage || "/uploads/default-thumb.jpg"}
+                    alt={post.data.title}
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="flex-1 p-6 flex flex-col justify-center">
+                  <div class="flex items-center gap-2 mb-3">
+                    <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+                      🏆 Prestasi
+                    </span>
+                    <span class="text-xs text-gray-500">
+                      {new Date(post.data.pubdate || "").toLocaleDateString(
+                        "id-ID",
+                        { day: "numeric", month: "long", year: "numeric" },
+                      )}
+                    </span>
+                  </div>
+                  <h3 class="font-bold text-xl text-primary mb-2 group-hover:text-secondary transition-colors duration-300">
+                    {post.data.title}
+                  </h3>
+                  {post.data.description && (
+                    <p class="text-sm text-gray-600 line-clamp-2 mb-4">
+                      {post.data.description}
+                    </p>
+                  )}
+                  <span class="text-primary font-semibold text-sm inline-flex items-center gap-2 group-hover:gap-3 transition-all duration-300">
+                    Baca Selengkapnya
+                    <svg
+                      class="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2.5"
+                        d="M9 5l7 7-7 7"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </a>
+            </article>
+          ))
+        }
+      </div>
+
+      <div class="text-center" data-animate="fade">
+        <a
+          href="/posts/prestasi"
+          class="inline-flex items-center gap-2 bg-primary px-4 py-4 rounded-full font-bold text-sm shadow-xl hover:shadow-2xl hover:bg-secondary transition-all duration-300 hover:scale-105"
+        >
+          <span class="text-surface text-center">Lihat Semua Prestasi</span>
+          <svg
+            class="text-surface w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Extracurricular Section - Modern Gradient -->
+  <section
+    class="relative py-28 bg-gradient-to-br from-primary via-[#1e3a57] to-secondary overflow-hidden"
+  >
+    <!-- Animated Background Elements -->
+    <div
+      class="absolute top-20 left-10 w-72 h-72 bg-white/5 rounded-full blur-3xl animate-pulse"
+    >
+    </div>
+    <div
+      class="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse"
+      style="animation-delay: 1s;"
+    >
+    </div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="text-center max-w-3xl mx-auto mb-20" data-animate="fade">
+        <h2 class="text-3xl md:text-5xl font-bold text-surface mb-6">
+          Wadah Kreativitas Siswa
+        </h2>
+        <p class="text-md text-surface leading-relaxed">
+          Lebih dari sekadar akademik, kami mengasah bakat dan minat siswa
+          melalui berbagai kegiatan ekstrakurikuler yang bervariasi.
+        </p>
+        <div class="flex items-center justify-center gap-2 mt-6">
+          <div class="h-1 w-20 bg-white rounded-full"></div>
+          <div class="h-2 w-2 bg-secondary rounded-full"></div>
+          <div class="h-1 w-20 bg-white rounded-full"></div>
+        </div>
+      </div>
+
+      <ExtracurricularList maxItems={4} />
+
+      <div class="mt-16 text-center" data-animate="fade">
+        <a
+          href="/extracurricular"
+          class="inline-flex items-center gap-3 font-bold text-lg hover:scale-105 transition-all duration-300"
+        >
+          <span class="text-surface">Jelajahi Ekstrakurikuler</span>
+          <svg
+            class="text-surface w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Slider -->
+  <GallerySlider />
+
+  <!-- PPDB Section - Premium CTA -->
+  <section
+    class="relative py-32 bg-gradient-to-br from-primary via-secondary to-primary overflow-hidden"
+  >
+    <!-- Animated Decorative Elements -->
+    <div class="absolute inset-0">
+      <div
+        class="absolute top-1/4 left-1/4 w-64 h-64 bg-white/5 rounded-full blur-3xl animate-pulse"
+      >
+      </div>
+      <div
+        class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-white/5 rounded-full blur-3xl animate-pulse"
+        style="animation-delay: 1.5s;"
+      >
+      </div>
+    </div>
+
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+      <div
+        class="absolute inset-0"
+        style='background-image: url(&apos;data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ffffff" fill-opacity="0.4"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E&apos;);'
+      >
+      </div>
+    </div>
+
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="max-w-4xl mx-auto text-center">
+        <!-- Icon -->
+        <div
+          class="mb-8 inline-flex items-center justify-center"
+          data-animate="fade"
+        >
+          <div
+            class="bg-white/10 backdrop-blur-md p-4 rounded-full border-4 border-white/20"
+          >
+            <svg
+              class="w-8 h-8 text-surface"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+              ></path>
+            </svg>
+          </div>
+        </div>
+
+        <h2
+          class="text-3xl md:text-5xl font-bold text-surface mb-6"
+          data-animate="fade"
+        >
+          Penerimaan Peserta Didik Baru <Year />
+        </h2>
+
+        <p
+          class="text-md md:text-xl text-surface mb-12 leading-relaxed"
+          data-animate="fade"
+        >
+          Bergabunglah dengan keluarga besar kami dan raih masa depan cemerlang
+          bersama pendidikan berkualitas
+        </p>
+
+        <!-- CTA Buttons -->
+        <div
+          class="flex flex-col sm:flex-row gap-6 justify-center items-center"
+          data-animate="fade"
+        >
+          <a
+            href="/ppdb"
+            class="group relative px-6 py-3 bg-surface text-primary rounded-full font-bold text-sm shadow-2xl hover:shadow-white/30 transition-all duration-300 hover:scale-105 inline-flex items-center gap-3"
+          >
+            <span>FORMULIR PENDAFTARAN</span>
+            <svg
+              class="w-6 h-6 group-hover:translate-x-1 transition-transform duration-300"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.5"
+                d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+            </svg>
+          </a>
+
+          <a
+            href="/about"
+            class="group px-6 py-3 bg-primary border-2 border-white rounded-full font-bold text-lg hover:bg-white transition-all duration-300 hover:scale-105 inline-flex items-center gap-3"
+          >
+            <span class="text-surface group-hover:text-primary"
+              >Informasi Lengkap</span
+            >
+            <svg
+              class="text-surface group-hover:text-primary w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2.5"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+          </a>
+        </div>
+
+        <!-- Additional Info -->
+        <div
+          class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-6"
+          data-animate="fade"
+        >
+          <div
+            class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6"
+          >
+            <div class="text-4xl font-bold text-surface mb-2">100%</div>
+            <div class="text-surface text-sm">Akreditasi A</div>
+          </div>
+          <div
+            class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6"
+          >
+            <div class="text-4xl font-bold text-surface mb-2">24/7</div>
+            <div class="text-surface text-sm">Pendaftaran Online</div>
+          </div>
+          <div
+            class="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6"
+          >
+            <div class="text-xl font-bold text-surface mb-2">⭐⭐⭐⭐⭐</div>
+            <div class="text-surface text-sm">Fasilitas Lengkap</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Staff Section - Professional Cards -->
+  <section class="relative py-24 bg-gradient-to-b from-white to-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16" data-animate="fade">
+        <h2 class="text-4xl md:text-5xl font-bold text-primary mb-4">
+          Tenaga Pendidik
+        </h2>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+          Tim pengajar profesional dan berpengalaman yang siap membimbing siswa
+          menuju kesuksesan
+        </p>
+        <div class="flex items-center justify-center gap-2 mt-6">
+          <div class="h-1 w-20 bg-primary rounded-full"></div>
+          <div class="h-2 w-2 bg-secondary rounded-full"></div>
+          <div class="h-1 w-20 bg-primary rounded-full"></div>
+        </div>
+      </div>
+
+      <StaffList />
+    </div>
+  </section>
+
+  <script>
+    import { initScrollAnimations } from "../scripts/scrollAnimations.js";
+
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        initScrollAnimations();
+      }, 50);
+    });
+  </script>
+
+  <style>
+    /* Modern Line Clamp Utilities */
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Smooth Pulse Animation */
+    @keyframes pulse {
+      0%,
+      100% {
+        opacity: 0.3;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.5;
+        transform: scale(1.05);
+      }
+    }
+
+    /* Gradient Animation */
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+  </style>
+</Layout>

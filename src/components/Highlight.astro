@@ -1,0 +1,402 @@
+---
+// file: src/components/Highlight.astro
+import type { CollectionEntry } from "astro:content";
+import { getEntry, getCollection } from "astro:content";
+import LatestPosts from "./LatestPosts.astro";
+
+interface PostData {
+  title: string;
+  author?: string;
+  pubdate?: Date | string;
+  heroImage?: string;
+  description?: string;
+  category?: string;
+}
+
+interface Post {
+  slug: string;
+  category: string;
+  data: PostData;
+}
+
+function getSafeImageSrc(path: string | undefined): string {
+  if (!path) return "/uploads/default-thumb.jpg";
+  return path.startsWith("/") ? path : `/${path}`;
+}
+
+// 1. Ambil data PPDB settings
+const ppdbData = await getCollection("ppdb").catch(() => []);
+const ppdbSettings =
+  ppdbData.find((item) => item.id === "settings") || ppdbData[0];
+
+// 2. Ambil semua pamflate
+const allPamflate = await getCollection("pamflate").catch(() => []);
+
+// 3. Proses highlight pamflet
+let pamfletToDisplay = {
+  image: "/uploads/default-pamflet.jpg",
+  title: "Pamflet PPDB",
+  description: "",
+  link: "#",
+  show: true,
+};
+
+const highlightEnabled =
+  ppdbSettings?.data?.highlightPamflet?.enabled !== false;
+const hasHighlightData = ppdbSettings?.data?.highlightPamflet;
+
+if (highlightEnabled && hasHighlightData) {
+  const highlight = ppdbSettings.data.highlightPamflet;
+
+  if (highlight.pamflet) {
+    const pamfletId = highlight.pamflet.startsWith("pamflate/")
+      ? highlight.pamflet
+      : `pamflate/${highlight.pamflet}`;
+
+    const selectedPamflet = allPamflate.find((p) => {
+      return (
+        p.id === pamfletId ||
+        p.slug === highlight.pamflet ||
+        p.id.endsWith(`/${highlight.pamflet}`)
+      );
+    });
+
+    if (selectedPamflet) {
+      pamfletToDisplay.image = getSafeImageSrc(selectedPamflet.data.heroImage);
+      pamfletToDisplay.title = selectedPamflet.data.title;
+      pamfletToDisplay.description = selectedPamflet.data.description || "";
+      pamfletToDisplay.link = `/pamflate/${selectedPamflet.slug}`;
+      pamfletToDisplay.show = true;
+    } else if (highlight.customImage) {
+      pamfletToDisplay.image = getSafeImageSrc(highlight.customImage);
+      pamfletToDisplay.title = highlight.customTitle || "Pamflet PPDB";
+      pamfletToDisplay.description = highlight.customDescription || "";
+      pamfletToDisplay.link = highlight.customLink || "#";
+      pamfletToDisplay.show = true;
+    }
+  } else if (highlight.customImage) {
+    pamfletToDisplay.image = getSafeImageSrc(highlight.customImage);
+    pamfletToDisplay.title = highlight.customTitle || "Pamflet PPDB";
+    pamfletToDisplay.description = highlight.customDescription || "";
+    pamfletToDisplay.link = highlight.customLink || "#";
+    pamfletToDisplay.show = true;
+  }
+}
+
+// 4. Fallback
+if (
+  !pamfletToDisplay.show ||
+  pamfletToDisplay.image === "/uploads/default-pamflet.jpg"
+) {
+  const ppdbPamflets = allPamflate
+    .filter(
+      (p) =>
+        p.data.category === "ppdb" &&
+        p.data.active !== false &&
+        !!p.data.heroImage,
+    )
+    .sort(
+      (a, b) =>
+        new Date(b.data.pubDate || 0).getTime() -
+        new Date(a.data.pubDate || 0).getTime(),
+    );
+
+  if (ppdbPamflets.length > 0) {
+    const latestPamflet = ppdbPamflets[0];
+    pamfletToDisplay.image = getSafeImageSrc(latestPamflet.data.heroImage);
+    pamfletToDisplay.title = latestPamflet.data.title;
+    pamfletToDisplay.description = latestPamflet.data.description || "";
+    pamfletToDisplay.link = `/pamflate/${latestPamflet.slug}`;
+    pamfletToDisplay.show = true;
+  }
+}
+
+// Ambil data profile (sambutan kepala sekolah)
+const about = await getEntry("about", "index");
+const sambutanKepsek = about?.data?.sambutan?.items?.[0] || null;
+
+const sambutanTitle = sambutanKepsek?.title || "Sambutan Kepala Sekolah";
+const sambutanImage = sambutanKepsek?.image
+  ? getSafeImageSrc(sambutanKepsek.image)
+  : "/uploads/default-thumb.jpg";
+
+// Increased limit and improved handling
+const styledExcerpt = sambutanKepsek
+  ? getStyledExcerpt(sambutanKepsek.body, 300)
+  : { __html: "Sambutan kepala sekolah akan segera tersedia..." };
+
+function getStyledExcerpt(body: string | undefined, limit: number) {
+  if (!body)
+    return { __html: "Sambutan kepala sekolah akan segera tersedia..." };
+
+  // Clean markdown syntax
+  let cleanText = body
+    .replace(/^#+\s+.*$/gm, "") // Remove headings completely
+    .replace(/\*\*/g, "")
+    .replace(/\*/g, "")
+    .replace(/<[^>]*>/g, "")
+    .trim();
+
+  const paragraphs = cleanText
+    .split(/\n\s*\n/)
+    .filter((p) => p.trim().length > 0);
+  let result = "";
+  let totalLength = 0;
+
+  // Skip greeting if possible to get to the meat, OR include it but don't count it towards strict limit
+
+  for (let i = 0; i < paragraphs.length; i++) {
+    const paragraph = paragraphs[i].trim();
+
+    // Different styling for greetings
+    if (
+      paragraph.toLowerCase().includes("bismillah") ||
+      paragraph.toLowerCase().includes("assalamu")
+    ) {
+      result += `<p class="text-primary font-medium italic mb-2">${paragraph}</p>`;
+      continue;
+    }
+
+    if (totalLength + paragraph.length > limit) {
+      if (result === "" && i === 0) {
+        // If first real paragraph is too long, truncate it
+        result += `<p class="text-gray-600 mb-2 leading-relaxed">${paragraph.slice(0, limit)}...</p>`;
+      } else {
+        // Add part of the paragraph
+        const remaining = limit - totalLength;
+        if (remaining > 50) {
+          result += `<p class="text-gray-600 mb-2 leading-relaxed">${paragraph.slice(0, remaining)}...</p>`;
+        }
+      }
+      break;
+    }
+
+    result += `<p class="text-gray-600 mb-2 leading-relaxed">${paragraph}</p>`;
+    totalLength += paragraph.length;
+  }
+
+  return { __html: result };
+}
+
+// Ambil data pengumuman
+const allPosts = await getCollection("posts").catch(() => []);
+const processedPosts = allPosts.map((post) => {
+  const filePath = post.filePath ?? "";
+  let category = post.data.category || "";
+  let slug = post.slug || post.id.split("/").pop() || "";
+
+  if (filePath.startsWith("src/content/posts/") && !category) {
+    const parts = filePath.replace(/^src\/content\/posts\//, "").split("/");
+    if (parts.length >= 2) category = parts[0];
+  }
+
+  return { slug, category, data: post.data };
+});
+
+const pengumumanPosts = processedPosts
+  .filter((post) => post.category?.toLowerCase() === "pengumuman")
+  .sort(
+    (a, b) =>
+      new Date(b.data.pubdate || 0).getTime() -
+      new Date(a.data.pubdate || 0).getTime(),
+  );
+---
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <!-- Kolom 1: Pamflet PPDB (Featured) -->
+  {
+    pamfletToDisplay.show && (
+      <div data-animate="fade" class="lg:col-span-1 h-full">
+        <div class="group relative h-full bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-secondary to-primary z-10" />
+
+          <div class="p-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50">
+            <h3 class="font-bold text-lg text-gray-800 flex items-center gap-2">
+              <span class="w-8 h-8 rounded-full bg-secondary/10 flex items-center justify-center text-secondary">
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"
+                  />
+                </svg>
+              </span>
+              Informasi PPDB
+            </h3>
+            <span class="text-xs font-semibold bg-primary text-surface px-2 py-1 rounded-full">
+              Hot Info
+            </span>
+          </div>
+
+          <div class="relative aspect-[4/5] overflow-hidden group">
+            <img
+              src={pamfletToDisplay.image}
+              alt={pamfletToDisplay.title}
+              loading="lazy"
+              decoding="async"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              onerror="this.onerror=null;this.src='/uploads/default-thumb.jpg';"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+              <p class="text-white font-medium line-clamp-2">
+                {pamfletToDisplay.title}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  <!-- Kolom 2: Pengumuman Terbaru -->
+  <div data-animate="fade" class="lg:col-span-1 h-full">
+    <div
+      class="h-full bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col"
+    >
+      <div
+        class="p-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/50"
+      >
+        <h3 class="font-bold text-lg text-gray-800 flex items-center gap-2">
+          <span
+            class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary"
+          >
+            <svg
+              class="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              ><path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+              ></path></svg
+            >
+          </span>
+          Pengumuman
+        </h3>
+        <a
+          href="/posts/pengumuman"
+          class="text-xs font-semibold text-primary hover:text-secondary hover:underline"
+          >Lihat Semua</a
+        >
+      </div>
+
+      <div class="p-0 flex-1">
+        <div class="pengumuman-list">
+          <LatestPosts
+            posts={pengumumanPosts}
+            maxPosts={4}
+            layout="sidebar"
+            showDescription={false}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Kolom 3: Sambutan Kepala Sekolah -->
+  <div data-animate="fade" class="lg:col-span-1 h-full">
+    <div
+      class="h-full bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col relative"
+    >
+      <!-- Decorative Quote Background -->
+      <div
+        class="absolute top-4 right-4 text-9xl text-gray-50 opacity-50 font-serif leading-none"
+      >
+        "
+      </div>
+
+      <div class="p-6 relative z-10 flex-1 flex flex-col">
+        <h3 class="font-bold text-lg text-primary mb-6 flex items-center gap-2">
+          <span
+            class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white text-xs"
+            >KS</span
+          >
+          {sambutanTitle}
+        </h3>
+
+        <!-- Content with better spacing -->
+        <div class="flex flex-col gap-4">
+          <div class="flex items-center gap-4">
+            <div
+              class="w-16 h-16 flex-shrink-0 rounded-full border-2 border-primary/20 p-1 bg-white"
+            >
+              <img
+                src={sambutanImage}
+                alt="Kepala Sekolah"
+                loading="lazy"
+                class="w-full h-full object-cover rounded-full"
+                onerror="this.onerror=null;this.src='/uploads/default-thumb.jpg';"
+              />
+            </div>
+            <div>
+              <p class="font-bold text-gray-800 text-sm">Nama Kepala Sekolah</p>
+              <p class="text-xs text-gray-500">Kepala Sekolah</p>
+            </div>
+          </div>
+
+          <div
+            class="text-sm text-gray-600 italic border-l-4 border-primary/20 pl-4 py-1"
+          >
+            <div set:html={styledExcerpt.__html} />
+          </div>
+        </div>
+
+        <div class="mt-auto pt-4 flex justify-end items-center">
+          {
+            sambutanKepsek && (
+              <a
+                href="/about/sambutan"
+                class="text-sm text-primary font-semibold hover:underline flex items-center gap-1"
+              >
+                Baca Selengkapnya
+                <svg
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M14 5l7 7m0 0l-7 7m7-7H3"
+                  />
+                </svg>
+              </a>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .pengumuman-list {
+    max-height: 500px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #cbd5e1 transparent;
+  }
+
+  .pengumuman-list::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .pengumuman-list::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .pengumuman-list::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 4px;
+  }
+</style>
