@@ -1,0 +1,45 @@
+---
+import { getCollection } from "astro:content";
+
+const partners = await getCollection("partners");
+const partnerList = partners[0]?.data.partnerList || [];
+---
+
+<div class="w-full relative overflow-hidden py-10 bg-white">
+    <div
+        class="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white z-10 pointer-events-none"
+    >
+    </div>
+
+    <div class="flex animate-scroll w-[max-content]">
+        {
+            [...partnerList, ...partnerList, ...partnerList].map(
+                (partner, index) => (
+                    <div class="flex-shrink-0 mx-8 flex items-center justify-center grayscale hover:grayscale-0 transition-all duration-300 opacity-60 hover:opacity-100 hover:scale-110">
+                        <img
+                            src={partner.logo}
+                            alt={partner.name}
+                            class="h-16 w-auto object-contain max-w-[150px]"
+                            title={partner.name}
+                        />
+                    </div>
+                ),
+            )
+        }
+    </div>
+</div>
+
+<style>
+    .animate-scroll {
+        animation: scroll 40s linear infinite;
+    }
+
+    @keyframes scroll {
+        0% {
+            transform: translateX(0);
+        }
+        100% {
+            transform: translateX(-33.33%);
+        }
+    }
+</style>

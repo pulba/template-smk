@@ -1,16 +1,16 @@
 ---
-title: SMP Negeri 1 Indonesia Umumkan Jadwal Pendaftaran Peserta Didik Baru
+title: SMK Negeri 1 Indonesia Umumkan Jadwal Pendaftaran Peserta Didik Baru
 author: src/content/authors/admin.md
 pubdate: 2026-01-28T00:00:00.000Z
 description: >-
-  SMP Negeri 1 Indonesia menyampaikan jadwal resmi pendaftaran peserta didik
+  SMK Negeri 1 Indonesia menyampaikan jadwal resmi pendaftaran peserta didik
   baru sebagai acuan bagi calon siswa dalam mengikuti proses penerimaan tahun
   ajaran baru.
 category: pengumuman
 heroImage: /uploads/1280w-6UHGujUD_QI.webp
 ---
 
-SMP Negeri 1 Indonesia mengumumkan jadwal pendaftaran peserta didik baru untuk tahun ajaran 2026 atau 2027. Pendaftaran dibuka mulai tanggal 15 Juni 2026 dan ditutup pada 30 Juni 2026. Seluruh proses pendaftaran dilaksanakan sesuai dengan ketentuan yang berlaku dari dinas pendidikan.
+SMK Negeri 1 Indonesia mengumumkan jadwal pendaftaran peserta didik baru untuk tahun ajaran 2026 atau 2027. Pendaftaran dibuka mulai tanggal 15 Juni 2026 dan ditutup pada 30 Juni 2026. Seluruh proses pendaftaran dilaksanakan sesuai dengan ketentuan yang berlaku dari dinas pendidikan.
 
 ## Tahapan Penerimaan Peserta Didik Baru
 

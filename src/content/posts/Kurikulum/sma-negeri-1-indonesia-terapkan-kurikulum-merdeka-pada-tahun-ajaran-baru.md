@@ -1,9 +1,9 @@
 ---
-title: SMP Negeri 1 Indonesia Terapkan Kurikulum Merdeka pada Tahun Ajaran Baru
+title: SMK Negeri 1 Indonesia Terapkan Kurikulum Merdeka pada Tahun Ajaran Baru
 author: src/content/authors/admin.md
 pubdate: 2026-01-28T00:00:00.000Z
 description: >-
-  SMP Negeri 1 Indonesia mulai menerapkan Kurikulum Merdeka pada tahun ajaran
+  SMK Negeri 1 Indonesia mulai menerapkan Kurikulum Merdeka pada tahun ajaran
   baru sebagai upaya peningkatan kualitas pembelajaran.
 category: kurikulum
 heroImage: /uploads/20251104113343-whatsapp-image-2025-11-04-at-092100.webp

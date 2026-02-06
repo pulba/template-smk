@@ -1,16 +1,16 @@
 ---
-title: SMP Negeri 1 Indonesia Sampaikan Informasi Libur Semester Ganjil
+title: SMK Negeri 1 Indonesia Sampaikan Informasi Libur Semester Ganjil
 author: src/content/authors/admin.md
 pubdate: 2026-01-28T00:00:00.000Z
 description: >-
-  SMP Negeri 1 Indonesia menyampaikan informasi resmi terkait jadwal libur
+  SMK Negeri 1 Indonesia menyampaikan informasi resmi terkait jadwal libur
   semester ganjil sebagai pedoman bagi siswa dan orang tua dalam perencanaan
   kegiatan selama masa libur.
 category: pengumuman
 heroImage: /uploads/WhatsApp Image 2025-12-03 at 08.44.53 (2).jpeg
 ---
 
-SMP Negeri 1 Indonesia mengumumkan jadwal libur semester ganjil tahun ajaran 2026 atau 2027. Libur semester dimulai pada tanggal 20 Desember 2026 dan berakhir pada 2 Januari 2027. Kegiatan pembelajaran akan kembali dilaksanakan pada awal semester genap sesuai kalender akademik sekolah.
+SMK Negeri 1 Indonesia mengumumkan jadwal libur semester ganjil tahun ajaran 2026 atau 2027. Libur semester dimulai pada tanggal 20 Desember 2026 dan berakhir pada 2 Januari 2027. Kegiatan pembelajaran akan kembali dilaksanakan pada awal semester genap sesuai kalender akademik sekolah.
 
 ## Tujuan Penetapan Libur Semester
 

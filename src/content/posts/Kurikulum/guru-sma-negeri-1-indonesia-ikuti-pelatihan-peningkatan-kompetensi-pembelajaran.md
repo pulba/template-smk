@@ -1,11 +1,11 @@
 ---
 title: >-
-  Guru SMP Negeri 1 Indonesia Ikuti Pelatihan Peningkatan Kompetensi
+  Guru SMK Negeri 1 Indonesia Ikuti Pelatihan Peningkatan Kompetensi
   Pembelajaran
 author: src/content/authors/admin.md
 pubdate: 2026-01-28T00:00:00.000Z
 description: >-
-  Guru SMP Negeri 1 Indonesia mengikuti pelatihan peningkatan kompetensi
+  Guru SMK Negeri 1 Indonesia mengikuti pelatihan peningkatan kompetensi
   pembelajaran guna mendukung pelaksanaan kurikulum dan kualitas pengajaran.
 category: kurikulum
 heroImage: /uploads/premium_photo-1661756423422-4486e27eb6dd.avif

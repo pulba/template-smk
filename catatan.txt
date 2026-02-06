@@ -5,3 +5,5 @@ update fitur kedepannya:
 4. pagination
 5. galery
 6. share article
+
+Untuk panduan instalasi lengkap, lihat file: TUTORIAL_INSTALLASI.md

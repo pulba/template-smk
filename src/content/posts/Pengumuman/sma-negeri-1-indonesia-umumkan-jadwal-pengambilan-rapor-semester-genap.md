@@ -1,9 +1,9 @@
 ---
-title: SMP Negeri 1 Indonesia Umumkan Jadwal Pengambilan Rapor Semester Genap
+title: SMK Negeri 1 Indonesia Umumkan Jadwal Pengambilan Rapor Semester Genap
 author: src/content/authors/admin.md
 pubdate: 2026-01-28T00:00:00.000Z
 description: >-
-  SMP Negeri 1 Indonesia menyampaikan pengumuman resmi terkait jadwal
+  SMK Negeri 1 Indonesia menyampaikan pengumuman resmi terkait jadwal
   pengambilan rapor semester genap sebagai pedoman bagi siswa dan orang tua.
 category: pengumuman
 heroImage: /uploads/651335498.jpg
@@ -11,7 +11,7 @@ heroImage: /uploads/651335498.jpg
 
 ## Pengumuman Pengambilan Rapor
 
-SMP Negeri 1 Indonesia mengumumkan bahwa pengambilan rapor semester genap akan dilaksanakan pada tanggal 30 Juni 2026. Pengambilan rapor dilakukan di ruang kelas masing masing sesuai jadwal yang telah ditentukan oleh sekolah.
+SMK Negeri 1 Indonesia mengumumkan bahwa pengambilan rapor semester genap akan dilaksanakan pada tanggal 30 Juni 2026. Pengambilan rapor dilakukan di ruang kelas masing masing sesuai jadwal yang telah ditentukan oleh sekolah.
 
 ## Ketentuan Pengambilan Rapor
 

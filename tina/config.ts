@@ -11,8 +11,8 @@ const socialIconOptions = Object.entries(SOCIAL_ICON_REGISTRY ?? {}).map(
 )
 
 export default defineConfig({
-  clientId: "e8a266f7-530e-4053-8d1e-3c5581da5932",
-  token: "a751d0a8882117e86b0780e436d42af02e072035",
+  clientId: "c163e5d6-f095-4523-89b9-b67913810f9a",
+  token: "fdfc6ab11292a76f6003e33e34f8fa42c4dfb248",
   branch: 'main',
 
   local: {
@@ -671,6 +671,149 @@ export default defineConfig({
       //   ]
       // },
 
+      // Majors / Jurusan
+      {
+        name: "majors",
+        label: "Jurusan",
+        path: "src/content/majors",
+        format: "md",
+        fields: [
+          {
+            type: "string",
+            name: "name",
+            label: "Nama Jurusan",
+            isTitle: true,
+            required: true,
+          },
+          {
+            type: "string",
+            name: "abbreviation",
+            label: "Singkatan",
+            required: true,
+            description: "Contoh: RPL, TKJ, TSM",
+          },
+          {
+            type: "image",
+            name: "icon",
+            label: "Icon/Logo Jurusan",
+            required: true,
+          },
+          {
+            type: "string",
+            name: "description",
+            label: "Deskripsi Singkat",
+            ui: {
+              component: "textarea"
+            }
+          },
+          {
+            type: "string",
+            name: "headOfProgram",
+            label: "Kepala Program Keahlian",
+          },
+          {
+            type: "object",
+            name: "facilities",
+            label: "Fasilitas Jurusan",
+            list: true,
+            fields: [
+              { type: "image", name: "image", label: "Foto" },
+              { type: "string", name: "name", label: "Nama Fasilitas" }
+            ]
+          },
+          {
+            type: "string",
+            name: "careerProspects",
+            label: "Prospek Kerja",
+            list: true,
+          },
+          {
+            type: "rich-text",
+            name: "body",
+            label: "Detail Lengkap",
+            isBody: true,
+          },
+        ]
+      },
+      // Industry Partners / Mitra Industri
+      {
+        name: "partners",
+        label: "Mitra Industri",
+        path: "src/content/partners",
+        format: "json",
+        ui: {
+          allowedActions: {
+            create: false,
+            delete: false,
+          },
+        },
+        fields: [
+          {
+            type: "object",
+            name: "partnerList",
+            label: "Daftar Mitra",
+            list: true,
+            ui: {
+              itemProps: (item) => ({ label: item?.name || "Mitra Baru" })
+            },
+            fields: [
+              { type: "string", name: "name", label: "Nama Perusahaan" },
+              { type: "image", name: "logo", label: "Logo Perusahaan" },
+              {
+                type: "string",
+                name: "type",
+                label: "Jenis Kerjasama",
+                options: ["PKL", "Perekrutan", "Sinkronisasi Kurikulum", "Lainnya"]
+              }
+            ]
+          }
+
+        ]
+      },
+      // BKK
+      {
+        name: "bkk",
+        label: "Bursa Kerja Khusus (BKK)",
+        path: "src/content/bkk",
+        format: "md",
+        ui: {
+          allowedActions: {
+            create: false,
+            delete: false
+          }
+        },
+        fields: [
+          {
+            type: "string",
+            name: "title",
+            label: "Judul Halaman",
+            isTitle: true,
+            required: true
+          },
+          {
+            type: "rich-text",
+            name: "body",
+            label: "Informasi BKK",
+            isBody: true
+          },
+          {
+            type: "object",
+            name: "jobListings",
+            label: "Lowongan Kerja",
+            list: true,
+            ui: {
+              itemProps: (item) => ({ label: item?.position + " at " + item?.company || "Lowongan Baru" })
+            },
+            fields: [
+              { type: "string", name: "position", label: "Posisi" },
+              { type: "string", name: "company", label: "Perusahaan" },
+              { type: "string", name: "location", label: "Lokasi" },
+              { type: "string", name: "deadline", label: "Batas Lamaran" },
+              { type: "string", name: "link", label: "Link Pendaftaran" }
+            ]
+          }
+        ]
+      },
       // collection ppdb
       {
         name: "ppdbSettings",

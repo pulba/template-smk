@@ -1,0 +1,34 @@
+{
+  "partnerList": [
+    {
+      "name": "PT. Telkom Indonesia",
+      "logo": "/uploads/1594108255409_compress_logo telkom indonesia.png",
+      "type": "Sinkronisasi Kurikulum"
+    },
+    {
+      "name": "Astra Honda Motor",
+      "logo": "/uploads/astra-honda-motor-logo-png_seeklogo-551919.png",
+      "type": "PKL"
+    },
+    {
+      "name": "Samsung",
+      "logo": "/uploads/images (1).png",
+      "type": "PKL"
+    },
+    {
+      "name": "IDN-Networkers",
+      "logo": "/uploads/Logo-Background.png",
+      "type": "PKL"
+    },
+    {
+      "name": "Dicoding Indonesia",
+      "logo": "/uploads/images.png",
+      "type": "Perekrutan"
+    },
+    {
+      "name": "Astragraphia",
+      "logo": "/uploads/astragraphia-og-1659154082.jpg",
+      "type": "PKL"
+    }
+  ]
+}

@@ -74,15 +74,15 @@
     ],
     "style": {
       "bgColor": "#F6F6F6",
-      "textColor": "#006E42",
-      "hoverColor": "#00AB64",
+      "textColor": "#21448D",
+      "hoverColor": "#507FAF",
       "borderColor": "#e5e7eb",
       "bgTransparent": "solid"
     },
     "schoolInfo": {
-      "name": "SMPN 2 INDONESIA",
-      "logo": "/uploads/download (2).png",
-      "logoAlt": "SMPN 2 INDONESIA",
+      "name": "SMPN 1 INDONESIA",
+      "logo": "/uploads/ChatGPT_Image_Feb_6__2026__04_35_17_PM-removebg-preview.webp",
+      "logoAlt": "SMK N INDONESIA",
       "logoWidthDesktop": 40,
       "logoWidthMobile": 40,
       "showName": true
@@ -91,23 +91,23 @@
   "slider": {
     "images": [
       {
-        "url": "/uploads/ChatGPT Image Feb 3, 2026, 10_10_17 AM.webp",
-        "alt": "SMPN 1 INDONESIA",
+        "url": "/uploads/ChatGPT Image Feb 6, 2026, 04_36_24 PM.webp",
+        "alt": "SMKN 1 INDONESIA",
         "caption": ""
       },
       {
-        "url": "/uploads/ChatGPT Image Feb 3, 2026, 10_13_59 AM.webp",
+        "url": "/uploads/ChatGPT Image Feb 6, 2026, 04_37_11 PM.webp",
         "alt": "Slider Image",
         "caption": ""
       },
       {
-        "url": "/uploads/ChatGPT Image Feb 3, 2026, 10_15_19 AM.webp",
+        "url": "/uploads/ChatGPT Image Feb 6, 2026, 04_40_19 PM.webp",
         "alt": "Slider Image",
         "caption": ""
       }
     ],
     "schoolInfo": {
-      "name": "SMP NEGERI 01 ",
+      "name": "SMK NEGERI 01 ",
       "city": "INDONESIA",
       "motto": "Berprestasi dalam Akademik. Berkarakter dalam Sikap. Bertanggung Jawab dalam Tindakan.",
       "welcomeMessage": "Welcom to",
@@ -130,17 +130,17 @@
   },
   "seo": {
     "siteInfo": {
-      "siteName": "SMPN 1 INDONESIA",
+      "siteName": "SMKN 1 INDONESIA",
       "siteUrl": "https://smanegeri1indonesia.sch.id",
       "siteDescription": "Rasa Penasaran Menginspirasi Pengetahuan",
       "siteLogo": "/uploads/logo-sma.png",
       "favicon": "/uploads/logo-sma.png"
     },
     "globalMeta": {
-      "titleTemplate": "%s | SMP Negeri 1 Indonesia",
-      "defaultTitle": "SMP Negeri 1 Indonesia",
+      "titleTemplate": "%s | SMK Negeri 1 Indonesia",
+      "defaultTitle": "SMK Negeri 1 Indonesia",
       "defaultDescription": "Rasa Penasaran Menginspirasi Pengetahuan",
-      "defaultKeywords": "SMP Negeri 1 Indonesia"
+      "defaultKeywords": "SMK Negeri 1 Indonesia"
     },
     "openGraph": {
       "type": "website",
@@ -155,14 +155,14 @@
   },
   "themeColors": {
     "background": "#F6F6F6",
-    "primary": "#006E42",
-    "secondary": "#00A864",
+    "primary": "#21448D",
+    "secondary": "#507FAF",
     "surface": "#F6F6F6",
     "textBase": "#1A1A1A",
-    "textHeading": "#006E42",
+    "textHeading": "#21448D",
     "textMuted": "#929292",
-    "link": "#006E42",
-    "linkHover": "#00A564",
+    "link": "#21448D",
+    "linkHover": "#507FAF",
     "border": "#D4D4D4"
   }
 }

@@ -11,6 +11,10 @@ import HeroSection from "../components/HeroSection.astro";
 import StaffList from "../components/StaffList.astro";
 import Year from "../components/Year.astro";
 import GallerySlider from "../components/GallerySlider.astro";
+import MajorCard from "../components/MajorCard.astro";
+import PartnersCarousel from "../components/PartnersCarousel.astro";
+
+const majors = await getCollection("majors");
 
 const allPosts = await getCollection("posts");
 
@@ -522,6 +526,15 @@ const latestPosts = processedPosts
 
       <StaffList />
     </div>
+  </section>
+
+  <!-- Mitra Industri Section -->
+  <section class="py-16 bg-white border-t border-gray-100">
+    <div class="container mx-auto px-4 text-center mb-10">
+      <h2 class="text-3xl font-bold text-gray-800">Mitra Industri</h2>
+      <p class="text-gray-500">Bekerjasama dengan perusahaan terkemuka</p>
+    </div>
+    <PartnersCarousel />
   </section>
 
   <script>

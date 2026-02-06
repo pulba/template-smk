@@ -173,7 +173,7 @@ const ppdbSettings = defineCollection({
     // Data utama PPDB (grouping)
     datappdb: z.object({
       // Branding
-      schoolName: z.string().default('SMP Xaverius 2'),
+      schoolName: z.string().default('SMK Xaverius 2'),
       ppdbAlias: z.string().optional(),
       logoUrl: z.string().default('/images/logo-school.png'),
       coverImageUrl: z.string().default('/images/cover-school.jpg'),
@@ -188,7 +188,7 @@ const ppdbSettings = defineCollection({
       // Test Information
       testDate: z.string().default('11 November 2025'),
       testTime: z.string().default('08:00 - 12:00 WIB'),
-      testLocation: z.string().default('Aula Utama SMPN Indonesia'),
+      testLocation: z.string().default('Aula Utama SMKN Indonesia'),
 
       // Requirements (array of objects)
       requirements: z.array(
@@ -371,6 +371,62 @@ const contactCollection = defineCollection({
   }),
 });
 
+// Majors Collection
+const majors = defineCollection({
+  loader: glob({
+    base: "./src/content/majors",
+    pattern: "**/*.{md,mdx}"
+  }),
+  schema: z.object({
+    name: z.string(),
+    abbreviation: z.string(),
+    icon: z.string(),
+    description: z.string().optional(),
+    headOfProgram: z.string().optional(),
+    facilities: z.array(
+      z.object({
+        image: z.string(),
+        name: z.string().optional()
+      })
+    ).optional(),
+    careerProspects: z.array(z.string()).optional(),
+  })
+});
+
+// Partners Collection
+const partners = defineCollection({
+  type: "data",
+  schema: z.object({
+    partnerList: z.array(
+      z.object({
+        name: z.string(),
+        logo: z.string(),
+        type: z.string().optional()
+      })
+    ).default([])
+  })
+});
+
+// BKK Collection
+const bkk = defineCollection({
+  loader: glob({
+    base: "./src/content/bkk",
+    pattern: "**/*.{md,mdx}"
+  }),
+  schema: z.object({
+    title: z.string(),
+    jobListings: z.array(
+      z.object({
+        position: z.string(),
+        company: z.string(),
+        location: z.string().optional(),
+        deadline: z.string().optional(),
+        link: z.string().optional()
+      })
+    ).optional().default([])
+  })
+});
+
 //  export collections
 export const collections = {
   posts,
@@ -381,5 +437,8 @@ export const collections = {
   ppdb: ppdbSettings,
   settings: websiteSettingsCollection,
   authors: authorsCollection,
-  contact: contactCollection
+  contact: contactCollection,
+  majors,
+  partners,
+  bkk
 };

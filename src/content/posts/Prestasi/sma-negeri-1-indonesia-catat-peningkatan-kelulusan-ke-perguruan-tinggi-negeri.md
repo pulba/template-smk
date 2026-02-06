@@ -1,9 +1,9 @@
 ---
-title: SMP Negeri 1 Indonesia Catat Peningkatan Kelulusan ke Perguruan Tinggi Negeri
+title: SMK Negeri 1 Indonesia Catat Peningkatan Kelulusan ke Perguruan Tinggi Negeri
 author: src/content/authors/admin.md
 pubdate: 2026-01-28T00:00:00.000Z
 description: >-
-  SMP Negeri 1 Indonesia mencatat peningkatan jumlah siswa yang diterima di
+  SMK Negeri 1 Indonesia mencatat peningkatan jumlah siswa yang diterima di
   perguruan tinggi negeri pada tahun kelulusan terbaru.
 category: prestasi
 heroImage: /uploads/Ilustrasi-Pijar-2-968618750.webp

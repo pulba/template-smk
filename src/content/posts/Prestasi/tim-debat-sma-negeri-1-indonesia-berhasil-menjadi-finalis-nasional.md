@@ -1,9 +1,9 @@
 ---
-title: Tim Debat SMP Negeri 1 Indonesia Berhasil Menjadi Finalis Nasional
+title: Tim Debat SMK Negeri 1 Indonesia Berhasil Menjadi Finalis Nasional
 author: src/content/authors/admin.md
 pubdate: 2026-01-28T00:00:00.000Z
 description: >-
-  Tim debat SMP Negeri 1 Indonesia berhasil melaju ke babak final tingkat
+  Tim debat SMK Negeri 1 Indonesia berhasil melaju ke babak final tingkat
   nasional dalam kompetisi debat antarsekolah menengah.
 category: prestasi
 heroImage: /uploads/f69afd4f-c8cb-4c58-a529-9e12b88835e9.jpeg
@@ -11,7 +11,7 @@ heroImage: /uploads/f69afd4f-c8cb-4c58-a529-9e12b88835e9.jpeg
 
 ## Keberhasilan di Tingkat Nasional
 
-Tim debat SMP Negeri 1 Indonesia berhasil menjadi finalis nasional setelah melalui beberapa tahap seleksi. Kompetisi ini menguji kemampuan berpikir kritis, argumentasi, dan kerja sama tim.
+Tim debat SMK Negeri 1 Indonesia berhasil menjadi finalis nasional setelah melalui beberapa tahap seleksi. Kompetisi ini menguji kemampuan berpikir kritis, argumentasi, dan kerja sama tim.
 
 ### Strategi dan Latihan Tim
 
