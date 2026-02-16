@@ -13,7 +13,7 @@
   "dependencies": {
     "@astrojs/alpinejs": "^0.4.9",
     "@astrojs/cloudflare": "^12.6.12",
-    "@astrojs/sitemap": "^3.6.0",
+    "@astrojs/sitemap": "^3.7.0",
     "@fontsource/mr-dafoe": "^5.2.8",
     "@fontsource/poppins": "^5.2.7",
     "@libsql/client": "^0.15.15",
@@ -21,7 +21,7 @@
     "@tailwindcss/vite": "^4.1.17",
     "@types/alpinejs": "^3.13.11",
     "alpinejs": "^3.15.2",
-    "astro": "^5.15.7",
+    "astro": "^5.17.2",
     "astro-robots-txt": "^1.0.0",
     "astro-seo-schema": "^5.1.0",
     "dotenv": "^17.2.3",

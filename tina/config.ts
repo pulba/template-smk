@@ -818,7 +818,7 @@ export default defineConfig({
       {
         name: "ppdbSettings",
         label: "PPDB",
-        path: "src/content/ppdb",
+        path: "src/content/pendaftaran",
         format: "json",
         ui: {
           allowedActions: {

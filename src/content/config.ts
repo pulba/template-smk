@@ -434,7 +434,7 @@ export const collections = {
   staff,
   pamflate,
   extracurricular,
-  ppdb: ppdbSettings,
+  pendaftaran: ppdbSettings,
   settings: websiteSettingsCollection,
   authors: authorsCollection,
   contact: contactCollection,

@@ -5,7 +5,7 @@
       {
         "backgroundImage": "/uploads/bakar.jpeg",
         "welcome": "Selamat Datang di",
-        "headline": "SMP Negeri 1 Indonesia",
+        "headline": "SMK Negeri 1 Indonesia",
         "city": "Malang",
         "subtitle": "Sekolah Unggulan Berbasis Se-Indonesia"
       },
@@ -80,7 +80,7 @@
       "bgTransparent": "solid"
     },
     "schoolInfo": {
-      "name": "SMPN 1 INDONESIA",
+      "name": "SMKN 1 INDONESIA",
       "logo": "/uploads/ChatGPT_Image_Feb_6__2026__04_35_17_PM-removebg-preview.webp",
       "logoAlt": "SMK N INDONESIA",
       "logoWidthDesktop": 40,
@@ -151,7 +151,7 @@
     }
   },
   "footer": {
-    "schoolName": "SMP NEGERI 1 INDONESIA"
+    "schoolName": "SMK NEGERI 1 INDONESIA"
   },
   "themeColors": {
     "background": "#F6F6F6",

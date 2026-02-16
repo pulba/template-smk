@@ -36,7 +36,7 @@ const animation = slider.animation || { autoSlide: true, slideInterval: 3000, ma
 
 const sliderId = `hero-slider-${Math.random().toString(36).substring(2, 11)}`;
 
-const ppdbCollection = await getCollection('ppdb');
+const ppdbCollection = await getCollection('pendaftaran');
 const ppdbData = ppdbCollection[0]?.data?.datappdb;
 const ppdbText = ppdbData?.ppdbAlias || "PPDB";
 ---
@@ -108,7 +108,7 @@ const ppdbText = ppdbData?.ppdbAlias || "PPDB";
                       </a>
                       
                       <a 
-                        href="/ppdb" 
+                        href="/pendaftaran" 
                         class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-3.5 bg-secondary rounded-lg font-semibold text-sm md:text-base hover:bg-primary transition-all duration-300 shadow-lg hover:shadow-xl"
                       >
                         <svg class="text-surface w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
