@@ -19,7 +19,7 @@ export const GET: APIRoute = async ({ url }) => {
         const result = await deleteUser(Number(id));
 
         if (result.success) {
-            // Redirect ke halaman PPDB setelah delete
+            // Redirect ke halaman SPMB setelah delete
             return new Response(null, {
                 status: 302,
                 headers: {

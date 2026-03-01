@@ -4,9 +4,11 @@ import LatestPosts from "../components/LatestPosts.astro";
 import ExtracurricularList from "../components/ExtracurricularList.astro";
 import Highlight from "../components/Highlight.astro";
 import Contact from "../components/Contact.astro";
+import OsisInti from "../components/OsisInti.astro";
 import "../styles/global.css";
 import { getCollection } from "astro:content";
 import websiteSettings from "../content/settings/website.json";
+import { getVisiblePosts } from "../utils/postFilter";
 import HeroSection from "../components/HeroSection.astro";
 import StaffList from "../components/StaffList.astro";
 import Year from "../components/Year.astro";
@@ -16,7 +18,8 @@ import PartnersCarousel from "../components/PartnersCarousel.astro";
 
 const majors = await getCollection("majors");
 
-const allPosts = await getCollection("posts");
+const allPostsRaw = await getCollection("posts");
+const allPosts = getVisiblePosts(allPostsRaw);
 
 // Proses posts untuk mendapatkan category dan slug yang benar
 const processedPosts = allPosts.map((post) => {
@@ -305,6 +308,49 @@ const latestPosts = processedPosts
     </div>
   </section>
 
+  <!-- OSIS Inti Section -->
+  <section class="relative py-24 bg-gray-50 border-t border-gray-100">
+    <div class="container mx-auto px-4 relative z-10">
+      <div class="text-center mb-16" data-animate="fade">
+        <h2 class="text-4xl md:text-5xl font-bold text-primary mb-4">
+          Pengurus OSIS
+        </h2>
+        <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+          Pemimpin muda yang berdedikasi mengabdi untuk kemajuan sekolah dan
+          siswa
+        </p>
+        <div class="flex items-center justify-center gap-2 mt-6">
+          <div class="h-1 w-20 bg-primary rounded-full"></div>
+          <div class="h-2 w-2 bg-secondary rounded-full"></div>
+          <div class="h-1 w-20 bg-primary rounded-full"></div>
+        </div>
+      </div>
+
+      <OsisInti />
+
+      <div class="text-center mt-12" data-animate="fade">
+        <a
+          href="/osis"
+          class="inline-flex items-center gap-2 bg-white text-primary px-8 py-3 rounded-full font-bold shadow-md border border-gray-100 hover:shadow-lg hover:border-secondary hover:text-secondary transition-all duration-300 hover:scale-105"
+        >
+          <span>Profil Lengkap OSIS</span>
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
   <!-- Extracurricular Section - Modern Gradient -->
   <section
     class="relative py-28 bg-gradient-to-br from-primary via-[#1e3a57] to-secondary overflow-hidden"
@@ -364,7 +410,7 @@ const latestPosts = processedPosts
   <!-- Gallery Slider -->
   <GallerySlider />
 
-  <!-- PPDB Section - Premium CTA -->
+  <!-- SPMB Section - Premium CTA -->
   <section
     class="relative py-32 bg-gradient-to-br from-primary via-secondary to-primary overflow-hidden"
   >

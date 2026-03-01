@@ -4,10 +4,10 @@ import Layout from "../layouts/Layout.astro";
 import Year from "../components/Year.astro";
 import { getCollection } from "astro:content";
 // Ambil data sekolah dari Tina CMS
-const ppdbData = await getCollection("pendaftaran");
-const settings = ppdbData[0]?.data?.datappdb || {
+const spmbData = await getCollection("pendaftaran");
+const settings = spmbData[0]?.data?.dataspmb || {
   schoolName: "",
-  ppdbAlias: "",
+  spmbAlias: "",
   logoUrl: "",
   coverImageUrl: "",
   primaryColor: "",
@@ -16,9 +16,16 @@ const settings = ppdbData[0]?.data?.datappdb || {
   registrationPeriod: "",
   registrationOpen: true,
 };
+
+// Generate 10 tahun ke depan mulai tahun ini
+const currentYear = new Date().getFullYear();
+const yearOptions = Array.from({ length: 10 }, (_, i) => {
+  const start = currentYear + i;
+  return `${start}/${start + 1}`;
+});
 ---
 
-<Layout title="Pendaftaran PPDB">
+<Layout title="Pendaftaran SPMB">
   <section
     class={`relative overflow-hidden bg-cover bg-center befor:content-[''] before:absolute before:opacity-70 before:z-10 before:w-full before:h-full before:bg-${settings.primaryColor}`}
     style={`background-image: url('${settings.coverImageUrl || ""}'); `}
@@ -47,8 +54,8 @@ const settings = ppdbData[0]?.data?.datappdb || {
           }
           <div class="text-surface">
             {
-              settings.ppdbAlias && (
-                <p class="text-sm font-medium">{settings.ppdbAlias}</p>
+              settings.spmbAlias && (
+                <p class="text-sm font-medium">{settings.spmbAlias}</p>
               )
             }
             <h1 class="text-2xl md:text-4xl font-bold mb-2">
@@ -103,7 +110,7 @@ const settings = ppdbData[0]?.data?.datappdb || {
     <h1
       class="text-xl md:text-3xl font-bold text-center max-w-4xl mx-auto mb-8 text-gray-800"
     >
-      Formulir Pendaftaran {settings.ppdbAlias}
+      Formulir Pendaftaran {settings.spmbAlias}
       <span class="text-blue-600"><Year /></span>
     </h1>
 
@@ -119,7 +126,7 @@ const settings = ppdbData[0]?.data?.datappdb || {
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-2">
-              Tahun PPDB <span class="text-red-500">*</span>
+              Tahun SPMB <span class="text-red-500">*</span>
             </label>
             <select
               name="tahun_ppdb"
@@ -127,9 +134,7 @@ const settings = ppdbData[0]?.data?.datappdb || {
               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-secondary transition duration-200"
             >
               <option value="">Pilih Tahun</option>
-              <option value="2026/2027">2026/2027</option>
-              <option value="2025/2026">2027/2028</option>
-              <option value="2025/2026">2028/2029</option>
+              {yearOptions.map((y) => <option value={y}>{y}</option>)}
             </select>
           </div>
         </div>
@@ -478,7 +483,7 @@ const settings = ppdbData[0]?.data?.datappdb || {
             />
             <label for="pernyataan_seleksi" class="text-gray-700">
               <span class="font-medium"
-                >Saya bersedia mengikuti proses seleksi PPDB sesuai jadwal</span
+                >Saya bersedia mengikuti proses seleksi SPMB sesuai jadwal</span
               >
             </label>
           </div>
@@ -493,7 +498,7 @@ const settings = ppdbData[0]?.data?.datappdb || {
             />
             <label for="pernyataan_keputusan" class="text-gray-700">
               <span class="font-medium"
-                >Saya memahami bahwa keputusan panitia PPDB adalah mutlak</span
+                >Saya memahami bahwa keputusan panitia SPMB adalah mutlak</span
               >
             </label>
           </div>
@@ -520,7 +525,26 @@ const settings = ppdbData[0]?.data?.datappdb || {
       <div
         class="bg-white rounded-xl shadow-2xl max-w-md w-full mx-auto transform transition-all"
       >
-        <div class="p-8">
+        <div class="p-8 relative">
+          <!-- Tombol X tutup -->
+          <button
+            onclick="closeModal()"
+            class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition"
+            aria-label="Tutup"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
           <div class="text-center mb-6">
             <div
               id="modalIcon"
@@ -676,6 +700,9 @@ const settings = ppdbData[0]?.data?.datappdb || {
       modal.classList.remove("hidden");
       modal.classList.add("flex");
       document.body.style.overflow = "hidden";
+
+      // Mulai auto-dismiss (hanya success)
+      startAutoDismiss(type);
     }
 
     function closeModal() {
@@ -683,6 +710,8 @@ const settings = ppdbData[0]?.data?.datappdb || {
       modal.classList.remove("flex");
       document.body.style.overflow = "auto";
     }
+    // Expose ke global scope agar bisa dipanggil via onclick="closeModal()"
+    window.closeModal = closeModal;
 
     // Close modal when clicking outside
     modal.addEventListener("click", (e) => {
@@ -698,16 +727,10 @@ const settings = ppdbData[0]?.data?.datappdb || {
       }
     });
 
-    // Auto-hide modal after 10 seconds for success
-    let modalTimeout;
-    form.addEventListener("submit", () => {
-      if (modalTimeout) clearTimeout(modalTimeout);
-      modalTimeout = setTimeout(() => {
-        if (!modal.classList.contains("hidden")) {
-          closeModal();
-        }
-      }, 10000);
-    });
+    // Auto-dismiss dihapus — user menutup modal secara manual (tombol Tutup atau icon X)
+    function startAutoDismiss(type) {
+      // Tidak ada auto-dismiss
+    }
   </script>
 
   <style>

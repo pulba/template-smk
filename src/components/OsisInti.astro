@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+
+const osisCollection = await getCollection("osis");
+const pengurusInti = osisCollection[0]?.data.pengurusInti || [];
+---
+
+<div
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+    data-animate="fade"
+>
+    {
+        pengurusInti.map((pengurus) => (
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 flex flex-col items-center text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2">
+                <div class="w-32 h-32 rounded-full overflow-hidden border-4 border-primary/10 shadow-inner mb-5">
+                    <img
+                        src={pengurus.image || "/uploads/default-thumb.jpg"}
+                        alt={pengurus.name}
+                        class="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                        loading="lazy"
+                    />
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-1">
+                    {pengurus.name}
+                </h3>
+                <p class="text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full uppercase tracking-wide">
+                    {pengurus.role}
+                </p>
+            </div>
+        ))
+    }
+</div>

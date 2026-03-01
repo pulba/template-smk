@@ -6,10 +6,18 @@ import { getAllUsers } from "../../lib/db";
 const usersResult = await getAllUsers();
 const allUsers = usersResult.success ? usersResult.data : [];
 
-// Get unique years from data
-const uniqueYears = [
-  ...new Set(allUsers.map((user) => user.tahun_ppdb)),
-].sort();
+// Generate 10 tahun ke depan
+const currentYear = new Date().getFullYear();
+const upcomingYears = Array.from({ length: 10 }, (_, i) => {
+  const start = currentYear + i;
+  return `${start}/${start + 1}`;
+});
+
+// Merge: tahun dari database + 10 tahun ke depan (tanpa duplikat), diurutkan
+const yearsFromData = allUsers
+  .map((user) => user.tahun_ppdb as string)
+  .filter(Boolean);
+const uniqueYears = [...new Set([...yearsFromData, ...upcomingYears])].sort();
 
 // Get current year from URL or default to "Semua"
 const url = new URL(Astro.request.url);
@@ -38,9 +46,9 @@ const stats = calculateStats(filteredUsers);
 const allStats = calculateStats(allUsers);
 ---
 
-<Layout title="Admin PPDB">
+<Layout title="Admin SPMB">
   <div class="container min-h-screen mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-6">Admin Panel - Pendaftaran PPDB</h1>
+    <h1 class="text-3xl font-bold mb-6">Admin Panel - Pendaftaran SPMB</h1>
     <button
       id="logoutBtn"
       class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-medium flex items-center"
@@ -66,38 +74,25 @@ const allStats = calculateStats(allUsers);
         class="flex flex-col md:flex-row md:items-center justify-between gap-4"
       >
         <!-- Year Filter -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2"
-            >Filter Berdasarkan Tahun PPDB</label
+        <div class="flex items-center gap-3">
+          <label class="text-sm font-medium text-gray-700 whitespace-nowrap"
+            >Filter Tahun SPMB:</label
           >
-          <div class="flex flex-wrap gap-2">
-            <a href="?tahun=Semua">
-              <p
-                class={`px-4 py-2 rounded-lg font-medium transition ${
-                  selectedYear === "Semua"
-                    ? "bg-primary text-surface"
-                    : "bg-secondary text-surface hover:bg-primary"
-                }`}
-              >
-                Semua Tahun
-              </p>
-            </a>
+          <select
+            id="yearFilter"
+            class="px-4 py-2 rounded-lg border border-gray-300 bg-white text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary transition"
+          >
+            <option value="Semua" selected={selectedYear === "Semua"}
+              >Semua Tahun</option
+            >
             {
               uniqueYears.map((year) => (
-                <a href={`?tahun=${year}`}>
-                  <p
-                    class={`px-4 py-2 rounded-lg font-medium transition ${
-                      selectedYear === year
-                        ? "bg-primary text-surface hover:bg-secondary"
-                        : "bg-secondary text-surface hover:bg-primary"
-                    }`}
-                  >
-                    {year}
-                  </p>
-                </a>
+                <option value={year} selected={selectedYear === year}>
+                  {year}
+                </option>
               ))
             }
-          </div>
+          </select>
         </div>
 
         <!-- Export Button -->
@@ -352,6 +347,15 @@ const allStats = calculateStats(allUsers);
 
   <script>
     document.addEventListener("DOMContentLoaded", function () {
+      // Year filter dropdown navigation
+      const yearFilter = document.getElementById("yearFilter");
+      if (yearFilter) {
+        yearFilter.addEventListener("change", function () {
+          const val = (this as HTMLSelectElement).value;
+          window.location.href = `?tahun=${encodeURIComponent(val)}`;
+        });
+      }
+
       // Logout function
       document
         .getElementById("logoutBtn")

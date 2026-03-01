@@ -1,0 +1,249 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const osisCollection = await getCollection("osis");
+const data = osisCollection[0]?.data;
+
+if (!data) {
+    throw new Error(
+        "Data OSIS tidak ditemukan. Pastikan file src/content/osis/pengurus.json sudah ada.",
+    );
+}
+
+const { heroImage, visi, misi, pembina, pengurusInti, sekbid } = data;
+---
+
+<Layout
+    title="Profil OSIS"
+    description="Kenali lebih dekat pengurus OSIS beserta visi dan misi kami."
+>
+    <!-- Hero Section -->
+    <section
+        class="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden"
+    >
+        <div class="absolute inset-0 z-0 bg-gray-900">
+            {
+                heroImage ? (
+                    <img
+                        src={heroImage}
+                        alt="OSIS Hero"
+                        class="w-full h-full object-cover opacity-60 mix-blend-overlay"
+                    />
+                ) : (
+                    <div class="w-full h-full bg-gradient-to-tr from-primary to-[#1e3a57] opacity-90" />
+                )
+            }
+            <div
+                class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/60 to-transparent"
+            >
+            </div>
+        </div>
+
+        <div
+            class="relative z-10 text-center text-white px-4 max-w-4xl mx-auto"
+            data-animate="slide-up"
+        >
+            <h1
+                class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight drop-shadow-lg"
+            >
+                Profil <span class="text-secondary">OSIS</span>
+            </h1>
+            <p
+                class="text-lg md:text-2xl font-light text-gray-200 drop-shadow-md"
+            >
+                Membangun Generasi Bebas Berekspresi dan Berprestasi
+            </p>
+        </div>
+    </section>
+
+    <!-- Visi & Misi Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4 max-w-5xl">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16">
+                <div data-animate="fade-right">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div
+                            class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center"
+                        >
+                            <svg
+                                class="w-6 h-6 text-primary"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                ></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-900">
+                            Visi Kami
+                        </h2>
+                    </div>
+                    <p
+                        class="text-lg text-gray-600 leading-relaxed border-l-4 border-primary pl-6 py-2 bg-gray-50/50 rounded-r-lg"
+                    >
+                        {visi}
+                    </p>
+                </div>
+
+                <div data-animate="fade-left">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div
+                            class="w-12 h-12 bg-secondary/10 rounded-xl flex items-center justify-center"
+                        >
+                            <svg
+                                class="w-6 h-6 text-secondary"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                ></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-3xl font-bold text-gray-900">
+                            Misi Kami
+                        </h2>
+                    </div>
+                    <ul class="space-y-4">
+                        {
+                            misi.map((item, index) => (
+                                <li class="flex items-start gap-3 text-gray-600 bg-white p-4 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                    <span class="flex-shrink-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-bold text-sm">
+                                        {index + 1}
+                                    </span>
+                                    <span class="leading-relaxed pt-1">
+                                        {item}
+                                    </span>
+                                </li>
+                            ))
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pengurus Section -->
+    <section class="py-24 bg-gray-50 border-t border-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16" data-animate="fade">
+                <h2 class="text-4xl font-bold text-primary mb-4">
+                    Struktur Kepengurusan
+                </h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Kenali para pemimpin muda yang berdedikasi untuk kemajuan
+                    sekolah
+                </p>
+            </div>
+
+            <!-- Pembina -->
+            {
+                pembina && (
+                    <div class="mb-20 max-w-sm mx-auto" data-animate="fade-up">
+                        <div class="bg-white rounded-2xl shadow-xl overflow-hidden text-center relative max-w-sm mx-auto border-t-4 border-primary p-8 hover:-translate-y-2 transition-transform duration-300">
+                            <div class="w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-4 border-white shadow-lg relative z-10">
+                                <img
+                                    src={
+                                        pembina.image ||
+                                        "/uploads/default-teacher.png"
+                                    }
+                                    alt={pembina.name}
+                                    class="w-full h-full object-cover"
+                                />
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-2">
+                                {pembina.name}
+                            </h3>
+                            <span class="inline-block bg-primary/10 text-primary px-4 py-1.5 rounded-full text-sm font-semibold tracking-wide uppercase">
+                                {pembina.position}
+                            </span>
+                        </div>
+                    </div>
+                )
+            }
+
+            <!-- Pengurus Inti -->
+            <div class="mb-20">
+                <h3
+                    class="text-2xl font-bold text-center text-gray-800 mb-10 border-b pb-4 max-w-2xl mx-auto"
+                >
+                    Pengurus Inti
+                </h3>
+                <div
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+                >
+                    {
+                        pengurusInti.map((item, i) => (
+                            <div
+                                class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100 text-center hover:-translate-y-2 transition-transform duration-300"
+                                data-animate="fade-up"
+                                style={`animation-delay: ${i * 100}ms`}
+                            >
+                                <div class="w-28 h-28 mx-auto mb-5 rounded-full overflow-hidden shadow-md ring-4 ring-gray-50">
+                                    <img
+                                        src={
+                                            item.image ||
+                                            "/uploads/default-thumb.jpg"
+                                        }
+                                        alt={item.name}
+                                        class="w-full h-full object-cover"
+                                    />
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-1">
+                                    {item.name}
+                                </h4>
+                                <p class="text-secondary font-medium">
+                                    {item.role}
+                                </p>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+
+            <!-- Sekbid -->
+            <div>
+                <h3
+                    class="text-2xl font-bold text-center text-gray-800 mb-10 border-b pb-4 max-w-2xl mx-auto"
+                >
+                    Koordinator & Seksi Bidang
+                </h3>
+                <div
+                    class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                >
+                    {
+                        sekbid.map((item, i) => (
+                            <div
+                                class="bg-white p-6 rounded-xl shadow-md border-l-4 border-secondary hover:shadow-lg transition-all"
+                                data-animate="fade-up"
+                                style={`animation-delay: ${i * 100}ms`}
+                            >
+                                <h4 class="text-sm font-bold text-secondary uppercase tracking-wider mb-2">
+                                    {item.role}
+                                </h4>
+                                <p class="text-lg font-bold text-gray-900">
+                                    {item.name}
+                                </p>
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>

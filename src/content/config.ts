@@ -23,13 +23,15 @@ const posts = defineCollection({
     }).optional(),
     pubdate: z.coerce.date().optional(),
     updatedDate: z.coerce.date().optional(),
+    status: z.enum(['draft', 'terjadwal', 'terbit', 'takedown']).default('draft').optional(),
     heroImage: z.string().optional(),
     bgImage: z.string().optional(),
 
     // PERBAIKAN: Handle category dan customCategory
     category: z.string().transform(val => {
       if (!val) return val;
-      return val.toLowerCase().trim();
+      const normalized = val.toLowerCase().trim();
+      return normalized;
     }).optional(),
 
     // Tambahkan customCategory untuk category "other"
@@ -166,15 +168,15 @@ const pamflate = defineCollection({
   }),
 });
 
-// PPDB Settings Collection
-const ppdbSettings = defineCollection({
+// SPMB Settings Collection
+const spmbSettings = defineCollection({
   type: 'data', // menggunakan JSON/data
   schema: z.object({
-    // Data utama PPDB (grouping)
-    datappdb: z.object({
+    // Data utama SPMB (grouping)
+    dataspmb: z.object({
       // Branding
       schoolName: z.string().default('SMK Xaverius 2'),
-      ppdbAlias: z.string().optional(),
+      spmbAlias: z.string().optional(),
       logoUrl: z.string().default('/images/logo-school.png'),
       coverImageUrl: z.string().default('/images/cover-school.jpg'),
       primaryColor: z.string().default('#2563eb'),
@@ -206,7 +208,7 @@ const ppdbSettings = defineCollection({
 
       // Contact Info
       contactPhone: z.string().default('(0271) 123-456'),
-      contactEmail: z.string().default('ppdb@sekolah.example.com'),
+      contactEmail: z.string().default('spmb@sekolah.example.com'),
       contactAddress: z.string().default('Jl. Pendidikan No. 123, Bandar Lampung'),
 
     }).default({}),
@@ -427,14 +429,43 @@ const bkk = defineCollection({
   })
 });
 
+// OSIS Collection
+const osis = defineCollection({
+  type: "data",
+  schema: z.object({
+    heroImage: z.string().optional(),
+    visi: z.string(),
+    misi: z.array(z.string()),
+    pembina: z.object({
+      name: z.string(),
+      image: z.string().optional(),
+      position: z.string()
+    }),
+    pengurusInti: z.array(
+      z.object({
+        name: z.string(),
+        role: z.string(),
+        image: z.string().optional()
+      })
+    ),
+    sekbid: z.array(
+      z.object({
+        role: z.string(),
+        name: z.string()
+      })
+    )
+  })
+});
+
 //  export collections
 export const collections = {
   posts,
+  osis,
   about: aboutCollection,
   staff,
   pamflate,
   extracurricular,
-  pendaftaran: ppdbSettings,
+  pendaftaran: spmbSettings,
   settings: websiteSettingsCollection,
   authors: authorsCollection,
   contact: contactCollection,

@@ -24,10 +24,10 @@ function getSafeImageSrc(path: string | undefined): string {
   return path.startsWith("/") ? path : `/${path}`;
 }
 
-// 1. Ambil data PPDB settings
-const ppdbData = await getCollection("ppdb").catch(() => []);
-const ppdbSettings =
-  ppdbData.find((item) => item.id === "settings") || ppdbData[0];
+// 1. Ambil data SPMB settings
+const spmbData = await getCollection("pendaftaran").catch(() => []);
+const spmbSettings =
+  spmbData.find((item) => item.id === "settings") || spmbData[0];
 
 // 2. Ambil semua pamflate
 const allPamflate = await getCollection("pamflate").catch(() => []);
@@ -35,18 +35,18 @@ const allPamflate = await getCollection("pamflate").catch(() => []);
 // 3. Proses highlight pamflet
 let pamfletToDisplay = {
   image: "/uploads/default-pamflet.jpg",
-  title: "Pamflet PPDB",
+  title: "Pamflet SPMB",
   description: "",
   link: "#",
   show: true,
 };
 
 const highlightEnabled =
-  ppdbSettings?.data?.highlightPamflet?.enabled !== false;
-const hasHighlightData = ppdbSettings?.data?.highlightPamflet;
+  spmbSettings?.data?.highlightPamflet?.enabled !== false;
+const hasHighlightData = spmbSettings?.data?.highlightPamflet;
 
 if (highlightEnabled && hasHighlightData) {
-  const highlight = ppdbSettings.data.highlightPamflet;
+  const highlight = spmbSettings.data.highlightPamflet;
 
   if (highlight.pamflet) {
     const pamfletId = highlight.pamflet.startsWith("pamflate/")
@@ -69,14 +69,14 @@ if (highlightEnabled && hasHighlightData) {
       pamfletToDisplay.show = true;
     } else if (highlight.customImage) {
       pamfletToDisplay.image = getSafeImageSrc(highlight.customImage);
-      pamfletToDisplay.title = highlight.customTitle || "Pamflet PPDB";
+      pamfletToDisplay.title = highlight.customTitle || "Pamflet SPMB";
       pamfletToDisplay.description = highlight.customDescription || "";
       pamfletToDisplay.link = highlight.customLink || "#";
       pamfletToDisplay.show = true;
     }
   } else if (highlight.customImage) {
     pamfletToDisplay.image = getSafeImageSrc(highlight.customImage);
-    pamfletToDisplay.title = highlight.customTitle || "Pamflet PPDB";
+    pamfletToDisplay.title = highlight.customTitle || "Pamflet SPMB";
     pamfletToDisplay.description = highlight.customDescription || "";
     pamfletToDisplay.link = highlight.customLink || "#";
     pamfletToDisplay.show = true;
@@ -88,10 +88,10 @@ if (
   !pamfletToDisplay.show ||
   pamfletToDisplay.image === "/uploads/default-pamflet.jpg"
 ) {
-  const ppdbPamflets = allPamflate
+  const spmbPamflets = allPamflate
     .filter(
       (p) =>
-        p.data.category === "ppdb" &&
+        p.data.category === "spmb" &&
         p.data.active !== false &&
         !!p.data.heroImage,
     )
@@ -101,8 +101,8 @@ if (
         new Date(a.data.pubDate || 0).getTime(),
     );
 
-  if (ppdbPamflets.length > 0) {
-    const latestPamflet = ppdbPamflets[0];
+  if (spmbPamflets.length > 0) {
+    const latestPamflet = spmbPamflets[0];
     pamfletToDisplay.image = getSafeImageSrc(latestPamflet.data.heroImage);
     pamfletToDisplay.title = latestPamflet.data.title;
     pamfletToDisplay.description = latestPamflet.data.description || "";
@@ -203,7 +203,7 @@ const pengumumanPosts = processedPosts
 ---
 
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-  <!-- Kolom 1: Pamflet PPDB (Featured) -->
+  <!-- Kolom 1: Pamflet SPMB (Featured) -->
   {
     pamfletToDisplay.show && (
       <div data-animate="fade" class="lg:col-span-1 h-full">
@@ -227,7 +227,7 @@ const pengumumanPosts = processedPosts
                   />
                 </svg>
               </span>
-              Informasi PPDB
+              Informasi SPMB
             </h3>
             <span class="text-xs font-semibold bg-primary text-surface px-2 py-1 rounded-full">
               Hot Info

@@ -1,7 +1,7 @@
 {
-  "datappdb": {
+  "dataspmb": {
     "schoolName": "SMKN NEGERI 1 INDONESIA",
-    "ppdbAlias": "PPDB",
+    "spmbAlias": "SPMB",
     "logoUrl": "/uploads/logo-sma.png",
     "coverImageUrl": "/uploads/smanegeri1indonesia.png",
     "primaryColor": "#006E42",
@@ -33,7 +33,7 @@
       }
     ],
     "contactPhone": "(0271) 123-456",
-    "contactEmail": "ppdb@sekolah.example.com",
+    "contactEmail": "spmb@sekolah.example.com",
     "contactAddress": "Jl. Pendidikan No. 123"
   },
   "highlightPamflet": {

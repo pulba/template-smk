@@ -1,6 +1,7 @@
 //file: tina/config.ts
 // Trigger Tina Schema Update
 import { defineConfig } from "tinacms"
+import { PendaftaranScreen } from "./PendaftaranScreen"
 import { SOCIAL_ICON_REGISTRY } from "../src/config/socialIcons"
 
 const socialIconOptions = Object.entries(SOCIAL_ICON_REGISTRY ?? {}).map(
@@ -88,6 +89,18 @@ export default defineConfig({
           },
           {
             type: "string",
+            name: "status",
+            label: "Post Status",
+            options: [
+              { label: "Draft", value: "draft" },
+              { label: "Terjadwal", value: "terjadwal" },
+              { label: "Terbit", value: "terbit" },
+              { label: "Takedown", value: "takedown" }
+            ],
+            required: true,
+          },
+          {
+            type: "string",
             name: "description",
             label: "Description",
             ui: {
@@ -98,7 +111,13 @@ export default defineConfig({
             type: "string",
             name: "category",
             label: "Category",
-            description: "Gunakan huruf kecil, tanpa spasi. Contoh: akademik, kurikulum, event",
+            options: [
+              { label: "Akademik", value: "akademik" },
+              { label: "Berita", value: "news" },
+              { label: "Kurikulum", value: "kurikulum" },
+              { label: "Pengumuman", value: "pengumuman" },
+              { label: "Prestasi", value: "prestasi" }
+            ],
             required: true,
           },
           {
@@ -386,6 +405,57 @@ export default defineConfig({
               }
             ]
           },
+        ]
+      },
+      // OSIS
+      {
+        name: "osis",
+        label: "OSIS",
+        path: "src/content/osis",
+        format: "json",
+        ui: {
+          allowedActions: {
+            create: false,
+            delete: false,
+          },
+        },
+        fields: [
+          { type: "image", name: "heroImage", label: "Gambar Hero" },
+          { type: "string", name: "visi", label: "Visi", ui: { component: "textarea" } },
+          { type: "string", name: "misi", label: "Misi", list: true },
+          {
+            type: "object",
+            name: "pembina",
+            label: "Pembina OSIS",
+            fields: [
+              { type: "string", name: "name", label: "Nama Lengkap" },
+              { type: "image", name: "image", label: "Foto" },
+              { type: "string", name: "position", label: "Jabatan" }
+            ]
+          },
+          {
+            type: "object",
+            name: "pengurusInti",
+            label: "Pengurus Inti",
+            list: true,
+            ui: { itemProps: (item) => ({ label: item?.name || "Pengurus Baru" }) },
+            fields: [
+              { type: "string", name: "name", label: "Nama Lengkap" },
+              { type: "string", name: "role", label: "Jabatan" },
+              { type: "image", name: "image", label: "Foto" }
+            ]
+          },
+          {
+            type: "object",
+            name: "sekbid",
+            label: "Seksi Bidang",
+            list: true,
+            ui: { itemProps: (item) => ({ label: item?.role || "Sekbid Baru" }) },
+            fields: [
+              { type: "string", name: "role", label: "Nama Sekbid" },
+              { type: "string", name: "name", label: "Nama Koordinator" }
+            ]
+          }
         ]
       },
       //   staff
@@ -814,10 +884,10 @@ export default defineConfig({
           }
         ]
       },
-      // collection ppdb
+      // collection spmb
       {
-        name: "ppdbSettings",
-        label: "PPDB",
+        name: "spmbSettings",
+        label: "SPMB",
         path: "src/content/pendaftaran",
         format: "json",
         ui: {
@@ -829,11 +899,11 @@ export default defineConfig({
         fields: [
           {
             type: "object",
-            name: "datappdb",
-            label: "Data PPDB",
+            name: "dataspmb",
+            label: "Data SPMB",
             fields: [
               { type: "string", name: "schoolName", label: "Nama Sekolah", required: true },
-              { type: "string", name: "ppdbAlias", label: "Nama Pendaftaran" },
+              { type: "string", name: "spmbAlias", label: "Nama Pendaftaran" },
               { type: "image", name: "logoUrl", label: "Logo Sekolah" },
               { type: "image", name: "coverImageUrl", label: "Cover Image" },
               {
@@ -876,7 +946,7 @@ export default defineConfig({
           {
             type: "object",
             name: "highlightPamflet",
-            label: "Pamflet PPDB",
+            label: "Pamflet SPMB",
             fields: [
 
               { type: "image", name: "customImage", label: "Gambar Pamflet (Custom)" },
@@ -1722,5 +1792,16 @@ export default defineConfig({
 
     ],
   },
+
+  cmsCallback: (cms) => {
+    cms.screens.add({
+      name: "Admin Panel Pendaftaran",
+      label: "Admin Panel Pendaftaran",
+      Icon: () => null,
+      layout: "fullscreen",
+      Component: PendaftaranScreen,
+    });
+  },
 })
+
 

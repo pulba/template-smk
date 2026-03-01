@@ -67,6 +67,11 @@
         "isActive": false
       },
       {
+        "label": "OSIS",
+        "href": "/osis",
+        "isActive": false
+      },
+      {
         "label": "Kontak",
         "href": "/contact",
         "isActive": false

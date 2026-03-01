@@ -1,0 +1,59 @@
+{
+  "heroImage": "/uploads/ChatGPT Image Feb 6, 2026, 04_36_24 PM.webp",
+  "visi": "Menciptakan siswa yang berakhlak mulia, berprestasi, dan peduli terhadap lingkungan sekolah melalui berbagai program OSIS yang inovatif dan partisipatif.",
+  "misi": [
+    "Meningkatkan kesadaran beragama dan budi pekerti luhur bagi seluruh siswa.",
+    "Menyelenggarakan kegiatan ekstrakurikuler yang dapat mengembangkan bakat dan minat.",
+    "Membina kerja sama yang baik antar siswa dan mengedepankan musyawarah mufakat.",
+    "Menjadi wadah aspirasi siswa terhadap kebijakan sekolah untuk kemajuan bersama."
+  ],
+  "pembina": {
+    "name": "Ahmad Subagio, S.Pd., M.Si.",
+    "image": "/uploads/danny-ocean-ehUYU820lcA-unsplash.jpg",
+    "position": "Pembina OSIS"
+  },
+  "pengurusInti": [
+    {
+      "name": "Budi Santoso",
+      "role": "Ketua OSIS",
+      "image": "/uploads/naufal-osn-informatika.jpeg"
+    },
+    {
+      "name": "Siti Aminah",
+      "role": "Wakil Ketua",
+      "image": "/uploads/aksin-famizani-FkfBOZrTDYA-unsplash.jpg"
+    },
+    {
+      "name": "Rizky Firmansyah",
+      "role": "Sekretaris 1",
+      "image": "/uploads/Ilustrasi-Pijar-2-968618750.webp"
+    },
+    {
+      "name": "Dewi Lestari",
+      "role": "Bendahara 1",
+      "image": "/uploads/doctake-9J9LFdkvhU4-unsplash.jpg"
+    }
+  ],
+  "sekbid": [
+    {
+      "role": "Sekbid I (Keagamaan)",
+      "name": "Andi Saputra"
+    },
+    {
+      "role": "Sekbid II (Budi Pekerti & Akhlak)",
+      "name": "Nisa Sabyan"
+    },
+    {
+      "role": "Sekbid III (Bela Negara)",
+      "name": "Fajar Rahman"
+    },
+    {
+      "role": "Sekbid IV (Kesenian & Olahraga)",
+      "name": "Dimas Anggara"
+    },
+    {
+      "role": "Sekbid V (Kewirausahaan)",
+      "name": "Citra Kirana"
+    }
+  ]
+}

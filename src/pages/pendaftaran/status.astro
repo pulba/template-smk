@@ -3,9 +3,9 @@
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 
-// Ambil data PPDB settings dari Tina CMS
-const ppdbData = await getCollection("ppdb");
-const ppdb = ppdbData[0]?.data?.datappdb || {
+// Ambil data SPMB settings dari Tina CMS
+const spmbData = await getCollection("pendaftaran");
+const spmb = spmbData[0]?.data?.dataspmb || {
   // Default values jika data tidak ditemukan
   schoolName: "SMP Negeri 1",
   academicYear: "2026/2027",
@@ -22,28 +22,28 @@ const ppdb = ppdbData[0]?.data?.datappdb || {
     { requirement: "Dokumen dalam map merah (P) / biru (L)" },
   ],
   contactPhone: "(0271) 123-456",
-  contactEmail: "ppdb@sekolah.example.com",
+  contactEmail: "spmb@sekolah.example.com",
   contactAddress: "Jl. Pendidikan No. 123, Kota Anda",
 };
 
 // Siapkan data untuk JavaScript
 const jsPpdbData = {
-  registrationPeriod: ppdb.registrationPeriod || "",
-  testDate: ppdb.testDate || "",
-  testTime: ppdb.testTime || "",
-  testLocation: ppdb.testLocation || "",
-  requirements: ppdb.requirements || [],
-  contactPhone: ppdb.contactPhone || "",
-  contactEmail: ppdb.contactEmail || "",
-  contactAddress: ppdb.contactAddress || "",
+  registrationPeriod: spmb.registrationPeriod || "",
+  testDate: spmb.testDate || "",
+  testTime: spmb.testTime || "",
+  testLocation: spmb.testLocation || "",
+  requirements: spmb.requirements || [],
+  contactPhone: spmb.contactPhone || "",
+  contactEmail: spmb.contactEmail || "",
+  contactAddress: spmb.contactAddress || "",
 };
 ---
 
 <Layout title="Cek Status Pendaftaran">
-  <!-- Simpan data PPDB di hidden div untuk diakses JavaScript -->
+  <!-- Simpan data SPMB di hidden div untuk diakses JavaScript -->
   <div
-    id="ppdb-data"
-    data-ppdb={JSON.stringify(jsPpdbData)}
+    id="spmb-data"
+    data-spmb={JSON.stringify(jsPpdbData)}
     style="display: none;"
   >
   </div>
@@ -51,7 +51,7 @@ const jsPpdbData = {
   <div class="container min-h-screen mx-auto px-4 py-8">
     <div class="max-w-2xl mx-auto">
       <h1 class="text-3xl font-bold text-center mb-8 text-gray-800">
-        Cek Status Pendaftaran PPDB
+        Cek Status Pendaftaran SPMB
       </h1>
 
       <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
@@ -65,7 +65,7 @@ const jsPpdbData = {
           <input
             type="text"
             id="registrationId"
-            placeholder="Contoh: PPDB-1767766226920-R4ET"
+            placeholder="Contoh: SPMB-1767766226920-R4ET"
             class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
           />
           <p class="text-sm text-gray-500 mt-2">
@@ -86,7 +86,10 @@ const jsPpdbData = {
       </div>
 
       <div class="mt-8 text-center">
-        <a href="/pendaftaran" class="text-blue-600 hover:text-blue-800 font-medium">
+        <a
+          href="/pendaftaran"
+          class="text-blue-600 hover:text-blue-800 font-medium"
+        >
           ← Kembali ke Form Pendaftaran
         </a>
       </div>
@@ -96,17 +99,17 @@ const jsPpdbData = {
   <script>
     // Pastikan DOM sudah dimuat
     document.addEventListener("DOMContentLoaded", function () {
-      // Load PPDB settings dari data attribute
-      let ppdbSettings = {};
+      // Load SPMB settings dari data attribute
+      let spmbSettings = {};
       try {
-        const ppdbElement = document.getElementById("ppdb-data");
-        if (ppdbElement && ppdbElement.dataset.ppdb) {
-          ppdbSettings = JSON.parse(ppdbElement.dataset.ppdb);
-          console.log("PPDB settings loaded:", ppdbSettings);
+        const spmbElement = document.getElementById("spmb-data");
+        if (spmbElement && spmbElement.dataset.spmb) {
+          spmbSettings = JSON.parse(spmbElement.dataset.spmb);
+          console.log("SPMB settings loaded:", spmbSettings);
         }
       } catch (error) {
-        console.error("Error loading PPDB settings:", error);
-        ppdbSettings = {
+        console.error("Error loading SPMB settings:", error);
+        spmbSettings = {
           registrationPeriod: "1 Oktober - 30 November 2025",
           testDate: "11 November 2025",
           testTime: "08:00 - 12:00 WIB",
@@ -123,13 +126,13 @@ const jsPpdbData = {
             { requirement: "Dokumen dalam map merah (P) / biru (L)" },
           ],
           contactPhone: "(0271) 123-456",
-          contactEmail: "ppdb@sekolah.example.com",
+          contactEmail: "spmb@sekolah.example.com",
           contactAddress: "Jl. Pendidikan No. 123, Kota Anda",
         };
       }
 
       // Simpan ke window object untuk akses global
-      window.ppdb = ppdbSettings;
+      window.spmb = spmbSettings;
 
       const checkBtn = document.getElementById("checkBtn");
       const registrationId = document.getElementById("registrationId");
@@ -213,7 +216,7 @@ const jsPpdbData = {
             // Siapkan template untuk info tes (hanya ditampilkan jika status approved)
             let testInfoHTML = "";
             if (data.status === "approved") {
-              const settings = window.ppdb;
+              const settings = window.spmb;
               const requirements = Array.isArray(settings.requirements)
                 ? settings.requirements
                 : [];
@@ -320,44 +323,44 @@ const jsPpdbData = {
                               <!-- Grid untuk informasi utama -->
                               <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                 ${
-                                  window.ppdb.registrationPeriod
+                                  window.spmb.registrationPeriod
                                     ? `
                                   <div class="space-y-1">
                                     <p class="text-sm font-medium text-gray-600">Periode Pendaftaran</p>
-                                    <p class="text-base font-semibold text-gray-800">${escapeHtml(window.ppdb.registrationPeriod)}</p>
+                                    <p class="text-base font-semibold text-gray-800">${escapeHtml(window.spmb.registrationPeriod)}</p>
                                   </div>
                                 `
                                     : ""
                                 }
                                 
                                 ${
-                                  window.ppdb.testDate
+                                  window.spmb.testDate
                                     ? `
                                   <div class="space-y-1">
                                     <p class="text-sm font-medium text-gray-600">Tanggal Tes</p>
-                                    <p class="text-base font-semibold text-gray-800">${escapeHtml(window.ppdb.testDate)}</p>
+                                    <p class="text-base font-semibold text-gray-800">${escapeHtml(window.spmb.testDate)}</p>
                                   </div>
                                 `
                                     : ""
                                 }
                                 
                                 ${
-                                  window.ppdb.testTime
+                                  window.spmb.testTime
                                     ? `
                                   <div class="space-y-1">
                                     <p class="text-sm font-medium text-gray-600">Waktu Tes</p>
-                                    <p class="text-base font-semibold text-gray-800">${escapeHtml(window.ppdb.testTime)}</p>
+                                    <p class="text-base font-semibold text-gray-800">${escapeHtml(window.spmb.testTime)}</p>
                                   </div>
                                 `
                                     : ""
                                 }
                                 
                                 ${
-                                  window.ppdb.testLocation
+                                  window.spmb.testLocation
                                     ? `
                                   <div class="space-y-1">
                                     <p class="text-sm font-medium text-gray-600">Lokasi Tes</p>
-                                    <p class="text-base font-semibold text-gray-800">${escapeHtml(window.ppdb.testLocation)}</p>
+                                    <p class="text-base font-semibold text-gray-800">${escapeHtml(window.spmb.testLocation)}</p>
                                   </div>
                                 `
                                     : ""
@@ -369,13 +372,13 @@ const jsPpdbData = {
                               
                               <!-- Persyaratan -->
                               ${
-                                window.ppdb.requirements &&
-                                window.ppdb.requirements.length > 0
+                                window.spmb.requirements &&
+                                window.spmb.requirements.length > 0
                                   ? `
                                 <div>
                                   <h6 class="font-bold text-gray-800 mb-3">📋 Persyaratan</h6>
                                   <ul class="space-y-2">
-                                    ${window.ppdb.requirements
+                                    ${window.spmb.requirements
                                       .map(
                                         (req, index) => `
                                       <li class="flex items-start">
@@ -407,9 +410,9 @@ const jsPpdbData = {
                                     <li>• Bawa semua persyaratan asli dan fotokopi</li>
                                     <li>• Gunakan pakaian yang rapi dan sopan</li>
                                     ${
-                                      window.ppdb.contactPhone
+                                      window.spmb.contactPhone
                                         ? `
-                                      <li>• Konfirmasi kehadiran ke: <span class="font-medium">${escapeHtml(window.ppdb.contactPhone)}</span></li>
+                                      <li>• Konfirmasi kehadiran ke: <span class="font-medium">${escapeHtml(window.spmb.contactPhone)}</span></li>
                                     `
                                         : ""
                                     }
@@ -475,7 +478,7 @@ const jsPpdbData = {
                   <p>Tips:</p>
                   <ul class="list-disc list-inside ml-2">
                     <li>Periksa kembali ID pendaftaran</li>
-                    <li>ID biasanya dimulai dengan "PPDB-"</li>
+                    <li>ID biasanya dimulai dengan "SPMB-"</li>
                     <li>Pastikan tidak ada spasi di awal atau akhir</li>
                   </ul>
                 </div>
