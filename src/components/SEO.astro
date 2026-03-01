@@ -484,13 +484,11 @@ const breadcrumbSchema = generateBreadcrumbSchema();
         defer
         src={`https://www.googletagmanager.com/gtag/js?id=${analyticsConfig.gaId}`}
       />
-      <script>
-        {`
+      <script define:vars={{ gaId: analyticsConfig.gaId }}>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', '${analyticsConfig.gaId}');
-      `}
+        gtag('config', gaId);
       </script>
     </>
   )
