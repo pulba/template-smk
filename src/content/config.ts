@@ -24,6 +24,7 @@ const posts = defineCollection({
     pubdate: z.coerce.date().optional(),
     updatedDate: z.coerce.date().optional(),
     status: z.enum(['draft', 'terjadwal', 'terbit', 'takedown']).default('draft').optional(),
+    scheduledTime: z.coerce.date().optional(),
     heroImage: z.string().optional(),
     bgImage: z.string().optional(),
 

@@ -10,9 +10,10 @@ export const getVisiblePosts = (posts: CollectionEntry<"posts">[]) => {
         }
 
         if (status === "terjadwal") {
-            const pubDate = post.data.pubdate ? new Date(post.data.pubdate).getTime() : 0;
+            const scheduledTime = post.data.scheduledTime ? new Date(post.data.scheduledTime).getTime() : 
+                                 (post.data.pubdate ? new Date(post.data.pubdate).getTime() : 0);
             const now = new Date().getTime();
-            return pubDate <= now;
+            return scheduledTime <= now;
         }
 
         return true; // "terbit"

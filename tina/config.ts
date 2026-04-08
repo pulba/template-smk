@@ -100,6 +100,11 @@ export default defineConfig({
             required: true,
           },
           {
+            type: "datetime",
+            name: "scheduledTime",
+            label: "Waktu Terjadwal",
+          },
+          {
             type: "string",
             name: "description",
             label: "Description",
