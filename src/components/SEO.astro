@@ -96,6 +96,10 @@ const analyticsConfig = seoData?.analytics || {
   yandexVerification: "",
 };
 
+const siteUrl = siteInfo.siteUrl.endsWith("/")
+  ? siteInfo.siteUrl.slice(0, -1)
+  : siteInfo.siteUrl;
+
 // Generate meta tags
 const pageTitle = title
   ? globalMeta.titleTemplate.replace("%s", title)
@@ -104,13 +108,13 @@ const pageTitle = title
 const pageDescription = description || globalMeta.defaultDescription;
 const pageImage = image || openGraph.image || siteInfo.siteLogo;
 const fullUrl = url
-  ? `${siteInfo.siteUrl}${url.startsWith("/") ? url : "/" + url}`
-  : siteInfo.siteUrl;
+  ? `${siteUrl}${url.startsWith("/") ? url : "/" + url}`
+  : siteUrl;
 const pageType = type;
 
 // Generate canonical URL
 const canonicalUrl = canonical
-  ? `${siteInfo.siteUrl}${canonical.startsWith("/") ? canonical : "/" + canonical}`
+  ? `${siteUrl}${canonical.startsWith("/") ? canonical : "/" + canonical}`
   : fullUrl;
 
 // Robots meta
@@ -120,7 +124,8 @@ const robotsContent = noindex ? "noindex, nofollow" : "index, follow";
 const getFullImageUrl = (imgPath: string) => {
   if (!imgPath) return "";
   if (imgPath.startsWith("http")) return imgPath;
-  return `${siteInfo.siteUrl}${imgPath.startsWith("/") ? imgPath : "/" + imgPath}`;
+  const path = imgPath.startsWith("/") ? imgPath : "/" + imgPath;
+  return `${siteUrl}${path}`;
 };
 
 const orgStructuredData = parseStructuredData(
