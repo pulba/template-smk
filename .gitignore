@@ -24,4 +24,7 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
+# Auto-generated OG image JPEGs (created by scripts/convert-og-images.mjs)
+public/uploads/*_og.jpg
+
 node_modules
